@@ -32,6 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by patryk on 2017-04-30.
@@ -66,12 +68,17 @@ public class addMatch extends Fragment {
     TeamSpinnerAdapter adapter;
     TeamSpinnerAdapter adapter2;
 
+    Boolean getDataSucces = false;
+
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         myView = inflater.inflate(R.layout.add_match_layout, container, false);
 
-        addBTN = (Button) myView.findViewById(R.id.addTeamBTN);
+        addBTN = (Button) myView.findViewById(R.id.addMatchBTN);
+        addBTN.setEnabled(false);
+
         dateBTN = (ImageButton) myView.findViewById(R.id.dateImgBtn);
+
         calculateCurse = (Button) myView.findViewById(R.id.calculateCurseBTN);
 
         teamASpin = (Spinner) myView.findViewById(R.id.teamASpin);
@@ -165,8 +172,6 @@ public class addMatch extends Fragment {
 
         getTeam();
 
-        //TSA = new TeamSpinnerAdapter(myView.getContext(),R.layout.team_spinner_layout,TeamsList);
-
         adapter = new TeamSpinnerAdapter(myView.getContext(),
                R.layout.team_spinner_layout, TeamsList);
 
@@ -234,10 +239,50 @@ public class addMatch extends Fragment {
                 }
                 else
                 {
-                    setCurse();
+                    double curse[] = setCurse();
+
+                    java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+
+                    curseATV.setText("" + df.format(curse[0]));
+                    curseDrawTV.setText("" + df.format(curse[1]));
+                    curseBTV.setText("" + df.format(curse[2]));
+
+                    addBTN.setEnabled(true);
+                    calculateCurse.setEnabled(false);
+                }
+
+            }
+        });
+
+
+        addBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(teamA.equals(teamB))
+                {
+                    new AlertDialog.Builder(myView.getContext())
+                            .setTitle(R.string.addMatch)
+                            .setMessage(R.string.theSameTeamsError)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+
+                            })
+                            .show();
+                }
+                else
+                {
+
                 }
             }
         });
+
+
 
         return myView;
 
@@ -293,10 +338,13 @@ public class addMatch extends Fragment {
 
                         Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
 
+                        getDataSucces =  true;
+
 
                     } else {
 
                         progressDialog.dismiss();
+                        getDataSucces =  false;
 
                     }
 
@@ -313,9 +361,63 @@ public class addMatch extends Fragment {
         queue.add(gTR);
     }
 
-    private void setCurse()
-    {
+    private double[] setCurse() {
+        double[] curse = new double[3];
 
+        int min = 1;
+        int max = 10;
+
+        double curseA = ThreadLocalRandom.current().nextDouble(min, max);
+        double curseB = ThreadLocalRandom.current().nextDouble(min, max);
+        double curseX = 0;
+
+        double suma = curseA + curseB;
+        double roznica = Math.abs(curseA - curseB);
+
+        if (suma > 10 && roznica > 2) {
+            curseX = roznica / 2;
+        } else if (suma > 10 && roznica < 2) {
+            curseA /= 2;
+            curseB /= 2;
+
+            if (curseA < 1) {
+                curseA += 1;
+            }
+            if (curseB < 1) {
+                curseB += 1;
+            }
+
+            curseX = ThreadLocalRandom.current().nextDouble(3, 7);
+        } else if (suma < 10 && roznica > 2) {
+
+            curseX = roznica / 2;
+
+            if (curseX < 1) {
+                curseX += 1;
+            }
+        } else if (suma < 10 && roznica < 2) {
+            curseA /= 2;
+            curseB /= 2;
+
+            if (curseA < 1) {
+                curseA += 1;
+            }
+            if (curseB < 1) {
+                curseB += 1;
+            }
+
+            curseX = roznica / 2;
+
+            if (curseX < 1) {
+                curseX = ThreadLocalRandom.current().nextDouble(3, 7);
+            }
+        }
+
+        curse[0] = curseA;
+        curse[1] = curseX;
+        curse[2] = curseB;
+
+        return  curse;
     }
 
 }
