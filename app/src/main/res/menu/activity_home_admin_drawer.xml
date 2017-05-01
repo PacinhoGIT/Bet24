@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Matches">
+        <menu>
+            <item
+                android:id="@+id/showMatches"
+                android:icon="@drawable/showmatch"
+                android:title="Show Matches" />
+            <item
+                android:id="@+id/addNewMatch"
+                android:icon="@drawable/addmatch"
+                android:title="Add Match" />
+        </menu>
+    </item>
+
+    <item android:title="Teams">
+        <menu>
+            <item
+                android:id="@+id/addTeam"
+                android:icon="@drawable/team"
+                android:title="Add Team" />
+        </menu>
+    </item>
+
+    <item android:title="Payments">
+        <menu>
+            <item
+                android:id="@+id/acceptPayments"
+                android:icon="@drawable/payment"
+                android:title="User Payments" />
+        </menu>
+    </item>
+
+    <item android:title="Aplications">
+        <menu>
+            <item
+                android:id="@+id/logOutAdmin"
+                android:icon="@drawable/logout"
+                android:title="Logout" />
+
+            <item
+                android:id="@+id/exitAdmin"
+                android:icon="@drawable/exit"
+                android:title="Exit" />
+        </menu>
+    </item>
+
+
+</menu>

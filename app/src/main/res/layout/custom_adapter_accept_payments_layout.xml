@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:id="@+id/tvID_pay"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_weight="0.12" />
+
+    <TextView
+        android:text=""
+        android:layout_width="69dp"
+        android:layout_height="29dp"
+        android:id="@+id/tvID_user"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:id="@+id/tvValue"
+        android:layout_weight="0.11"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <Button
+        android:text="@string/accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/customAdapterAcceptBTN" />
+
+</LinearLayout>
