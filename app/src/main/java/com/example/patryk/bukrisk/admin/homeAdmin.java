@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.patryk.bukrisk.LoginRegister.LoginActivity;
 import com.example.patryk.bukrisk.R;
+import com.example.patryk.bukrisk.user.showMatches;
 
 public class homeAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,7 +86,7 @@ public class homeAdmin extends AppCompatActivity
 
         if (id == R.id.showMatches) {
 
-            showAllMatches sAM = new showAllMatches();
+            showMatches sAM = new showMatches();
 
             FragmentManager manager = getFragmentManager();
             manager.beginTransaction()
