@@ -85,6 +85,15 @@ public class homeAdmin extends AppCompatActivity
 
         if (id == R.id.showMatches) {
 
+            showAllMatches sAM = new showAllMatches();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_admin,
+                            sAM,
+                            sAM.getTag()
+                    ).commit();
+
         } else if (id == R.id.addNewMatch) {
 
 
