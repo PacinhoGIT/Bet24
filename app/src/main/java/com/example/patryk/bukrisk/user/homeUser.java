@@ -73,12 +73,8 @@ public class homeUser extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
+        confirmExit();
     }
 
     @Override
@@ -96,6 +92,16 @@ public class homeUser extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.matches) {
+
+            showMatches wU = new showMatches();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            wU,
+                            wU.getTag()
+                    ).commit();
+
 
         } else if (id == R.id.newCoupon) {
 
@@ -147,9 +153,7 @@ public class homeUser extends AppCompatActivity
         else if (id == R.id.logout) {
 
 
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
+            confirmLogout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

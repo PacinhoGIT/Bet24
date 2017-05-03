@@ -232,7 +232,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                                         RegisterActivity.this.startActivity(intent);
                                                         progressDialog.dismiss();
-                                                        finish();
+                                                          finishAffinity();
 
 
                                     } else {

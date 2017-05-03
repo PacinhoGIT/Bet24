@@ -256,7 +256,7 @@ public class addMatch extends Fragment {
                     curseBTV.setText("" + df.format(curse[2]));
 
                     addBTN.setEnabled(true);
-                    calculateCurse.setEnabled(false);
+                    //calculateCurse.setEnabled(false);
                 }
 
             }

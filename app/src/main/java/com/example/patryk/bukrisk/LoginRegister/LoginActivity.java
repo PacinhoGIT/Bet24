@@ -297,12 +297,14 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(adm.equals("T"))
                         {
+                            finishAffinity();
                             intent = new Intent(LoginActivity.this, homeAdmin.class);
                             intent.putExtra("name", name);
                             intent.putExtra("mail", mail);
                         }
                         else {
 
+                            finishAffinity();
                             intent = new Intent(LoginActivity.this, homeUser.class);
                             intent.putExtra("name", name);
                             intent.putExtra("mail", mail);
