@@ -99,9 +99,23 @@ public class homeUser extends AppCompatActivity
 
         } else if (id == R.id.newCoupon) {
 
-        } else if (id == R.id.myCoupon) {
+            Bundle args = new Bundle();
+            args.putString("nameUser", name);
+            args.putInt("id_user", id_user);
 
-        } else if (id == R.id.myBet) {
+
+            newCoupon wU = new newCoupon();
+            wU.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            wU,
+                            wU.getTag()
+                    ).commit();
+
+
+        } else if (id == R.id.myCoupon) {
 
         } else if (id == R.id.myBet) {
 

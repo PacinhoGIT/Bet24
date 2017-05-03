@@ -21,6 +21,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
+import com.example.patryk.bukrisk.Request.AddMatchRequest;
+import com.example.patryk.bukrisk.Request.AddTeamRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.adapter.TeamSpinnerAdapter;
 import com.example.patryk.bukrisk.adapter.Teams;
@@ -64,6 +66,8 @@ public class addMatch extends Fragment {
     String month1;
     String day1;
     String teamA,teamB;
+
+    double A, D, B;
 
     TeamSpinnerAdapter adapter;
     TeamSpinnerAdapter adapter2;
@@ -244,6 +248,10 @@ public class addMatch extends Fragment {
                     java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
 
                     curseATV.setText("" + df.format(curse[0]));
+                    A = curse[0];
+                    D = curse[1];
+                    B = curse[2];
+
                     curseDrawTV.setText("" + df.format(curse[1]));
                     curseBTV.setText("" + df.format(curse[2]));
 
@@ -277,7 +285,7 @@ public class addMatch extends Fragment {
                 }
                 else
                 {
-
+                    addMatch(); // nie dziala
                 }
             }
         });
@@ -418,6 +426,61 @@ public class addMatch extends Fragment {
         curse[2] = curseB;
 
         return  curse;
+    }
+
+    private void addMatch()
+    {
+
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Adding ...");
+        progressDialog.show();
+
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+
+                        progressDialog.dismiss();
+
+                        new AlertDialog.Builder(myView.getContext())
+                                .setTitle(R.string.addMatch)
+                                .setMessage(R.string.success)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.dismiss();
+                                    }
+
+                                })
+                                .show();
+                    } else {
+
+
+                    }
+                } catch (JSONException e) {
+
+                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        int idA = teamsHashMap.get(teamA);
+        int idB = teamsHashMap.get(teamB);
+
+        String AS = curseATV.getText().toString().replace(",",".");
+        String DS = curseDrawTV.getText().toString().replace(",",".");
+        String BS = curseBTV.getText().toString().replace(",",".");
+
+        AddMatchRequest addteam1 = new AddMatchRequest(""+idA,""+idB,dateTV.getText().toString(),"-",""+AS,""+DS,""+BS,"-", responseListener);
+        RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+        queue.add(addteam1);
     }
 
 }

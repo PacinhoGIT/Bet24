@@ -2,6 +2,7 @@ package com.example.patryk.bukrisk.admin;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ public class addTeam extends Fragment {
     double overallRatingVall;
 
     String teamName1;
+
+    ProgressDialog progressDialog;
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
@@ -130,13 +133,21 @@ public class addTeam extends Fragment {
     private void addNewTeam()
     {
 
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Adding ...");
+        progressDialog.show();
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
+
                     if (success) {
+
+                        progressDialog.dismiss();
 
                         new AlertDialog.Builder(myView.getContext())
                                 .setTitle(R.string.addTeamText)
