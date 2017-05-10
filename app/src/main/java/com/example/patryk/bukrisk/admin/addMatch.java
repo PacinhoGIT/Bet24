@@ -57,6 +57,8 @@ public class addMatch extends Fragment {
     ArrayList<String> teamsLits;
     HashMap<String, Integer> teamsHashMap;
 
+    HashMap<String, Double> overallRating;
+
     ProgressDialog progressDialog;
 
     private int year;
@@ -98,6 +100,7 @@ public class addMatch extends Fragment {
 
 
         teamsHashMap = new HashMap<>();
+        overallRating = new HashMap<>();
 
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
@@ -148,7 +151,7 @@ public class addMatch extends Fragment {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                String monthS = "";
+                                String monthS ;
                                 monthOfYear += 1;
 
                                 if (monthOfYear < 10) {
@@ -243,15 +246,15 @@ public class addMatch extends Fragment {
                 }
                 else
                 {
-                    double curse[] = setCurse();
+                    double curse[] = setCurse(overallRating.get(teamA),overallRating.get(teamB));
 
                     java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
 
-                    curseATV.setText("" + df.format(curse[0]));
                     A = curse[0];
                     D = curse[1];
                     B = curse[2];
 
+                    curseATV.setText("" + df.format(curse[0]));
                     curseDrawTV.setText("" + df.format(curse[1]));
                     curseBTV.setText("" + df.format(curse[2]));
 
@@ -285,7 +288,7 @@ public class addMatch extends Fragment {
                 }
                 else
                 {
-                    addMatch(); // nie dziala
+                    addMatches();
                 }
             }
         });
@@ -339,6 +342,7 @@ public class addMatch extends Fragment {
 
 
                             teamsHashMap.put(name,id_team);
+                            overallRating.put(name,overall_rating);
 
                         }
 
@@ -369,66 +373,80 @@ public class addMatch extends Fragment {
         queue.add(gTR);
     }
 
-    private double[] setCurse() {
-        double[] curse = new double[3];
+    private double[] setCurse(double a, double b) {
+        double[] course = new double[3];
 
-        int min = 1;
-        int max = 10;
+        double sub = Math.abs(a-b);
 
-        double curseA = ThreadLocalRandom.current().nextDouble(min, max);
-        double curseB = ThreadLocalRandom.current().nextDouble(min, max);
-        double curseX = 0;
+        double curseA=0;
+        double curseB=0;
+        double curseX=0;
 
-        double suma = curseA + curseB;
-        double roznica = Math.abs(curseA - curseB);
 
-        if (suma > 10 && roznica > 2) {
-            curseX = roznica / 2;
-        } else if (suma > 10 && roznica < 2) {
-            curseA /= 2;
-            curseB /= 2;
+        if(sub<=3)
+        {
+            if(a>b)
+            {
+                curseA = ThreadLocalRandom.current().nextDouble(3, 6);
+                curseB = curseA+ThreadLocalRandom.current().nextDouble(0.5, 2);
 
-            if (curseA < 1) {
-                curseA += 1;
             }
-            if (curseB < 1) {
-                curseB += 1;
+            else if(a<b)
+            {
+                curseB = ThreadLocalRandom.current().nextDouble(3, 6);
+                curseA = curseB+ThreadLocalRandom.current().nextDouble(0.5, 2);
             }
-
-            curseX = ThreadLocalRandom.current().nextDouble(3, 7);
-        } else if (suma < 10 && roznica > 2) {
-
-            curseX = roznica / 2;
-
-            if (curseX < 1) {
-                curseX += 1;
-            }
-        } else if (suma < 10 && roznica < 2) {
-            curseA /= 2;
-            curseB /= 2;
-
-            if (curseA < 1) {
-                curseA += 1;
-            }
-            if (curseB < 1) {
-                curseB += 1;
+            else
+            {
+                curseA = ThreadLocalRandom.current().nextDouble(3, 6);
+                curseB = curseA+ThreadLocalRandom.current().nextDouble(0.5, 1);
             }
 
-            curseX = roznica / 2;
-
-            if (curseX < 1) {
-                curseX = ThreadLocalRandom.current().nextDouble(3, 7);
-            }
+            curseX = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
         }
 
-        curse[0] = curseA;
-        curse[1] = curseX;
-        curse[2] = curseB;
+        if(sub>3 && sub<=6)
+        {
+            if(a>b)
+            {
+                curseA = ThreadLocalRandom.current().nextDouble(2, 3);
+                curseB = ThreadLocalRandom.current().nextDouble(6,7);
 
-        return  curse;
+            }
+            else if(a<b)
+            {
+                curseB = ThreadLocalRandom.current().nextDouble(2, 3);
+                curseA = ThreadLocalRandom.current().nextDouble(6,7);
+            }
+
+            curseX = ThreadLocalRandom.current().nextDouble(4.01, 5);
+        }
+
+        if(sub>6)
+        {
+            if(a>b)
+            {
+                curseA = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
+                curseB = ThreadLocalRandom.current().nextDouble(8.5, 10);
+
+            }
+            else if(a<b)
+            {
+                curseB = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
+                curseA = ThreadLocalRandom.current().nextDouble(8.5, 10);
+            }
+
+            curseX = ThreadLocalRandom.current().nextDouble(4.5, 6);
+        }
+
+        course[0]=curseA;
+        course[1]=curseB;
+        course[2]=curseX;
+
+        return course;
     }
 
-    private void addMatch()
+    private void addMatches()
     {
 
         progressDialog = new ProgressDialog(myView.getContext());
@@ -460,10 +478,8 @@ public class addMatch extends Fragment {
 
                                 })
                                 .show();
-                    } else {
+                    } else {}
 
-
-                    }
                 } catch (JSONException e) {
 
                     Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
