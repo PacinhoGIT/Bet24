@@ -2,4 +2,84 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <TextView
+        android:text="@string/newCoupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp"
+        android:id="@+id/newCouponTV"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="center" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/nameOfCouponET"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="47dp"
+        android:layout_marginBottom="200dp"
+        android:id="@+id/currentMatchesLV" />
+
+    <TextView
+        android:text="@string/betInCoupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/currentMatchesTV"
+        android:layout_marginBottom="168dp"
+        android:id="@+id/betInCouponTV"
+        android:layout_alignEnd="@+id/currentMatchesTV"
+        android:textAlignment="center" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/betInCouponTV"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp"
+        android:id="@+id/betInCouponLV" />
+
+    <TextView
+        android:text="@string/currentMatches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/currentMatchesTV"
+        android:textAlignment="center"
+        android:layout_below="@+id/nameOfCouponET"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/addCouponBtn"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="@string/addTeamBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addCouponBtn"
+        android:layout_alignTop="@+id/nameOfCouponET"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginRight="200dp"
+        android:id="@+id/nameOfCouponET"
+        android:layout_alignBaseline="@+id/nameOfCoupon"
+        android:layout_alignBottom="@+id/nameOfCoupon"
+        android:layout_marginStart="39dp"
+        android:layout_toStartOf="@+id/addCouponBtn" />
+
+    <TextView
+        android:text="@string/nameOfCoupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:id="@+id/nameOfCoupon"
+        android:layout_below="@+id/newCouponTV"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="19dp" />
 </RelativeLayout>
