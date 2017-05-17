@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class showMatches extends Fragment {
 
     HashMap<Integer, String> teams;
 
+
     Matches match;
 
     ArrayList<Matches> matches;
@@ -67,9 +69,9 @@ public class showMatches extends Fragment {
 
         matchesListView.setAdapter(matchesCustomAdapter);
 
-        match = new Matches("Mecz / Data", "Home","Draw","Away");
+        match = new Matches("Mecz / Data", "Home","Draw","Away","");
         matches.add(match);
-        match = new Matches("", "","","");
+        match = new Matches("", "","","","");
         matches.add(match);
         matchesCustomAdapter.notifyDataSetChanged();
 
@@ -176,7 +178,7 @@ public class showMatches extends Fragment {
 
                             String matchName = teamAName + " - " + teamBName;
 
-                            match = new Matches(matchName+"\n "+data,""+teamA,""+draw,""+teamB );
+                            match = new Matches(matchName+"\n "+data,""+teamA,""+draw,""+teamB,"");
 
                             matches.add(match);
                             matchesCustomAdapter.notifyDataSetChanged();

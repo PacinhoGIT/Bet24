@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <TextView
         android:text="TextView"
         android:layout_width="196dp"
         android:layout_height="49dp"
-        android:id="@+id/matchNewCouponTV" />
+        android:id="@+id/matchNewCouponTV"
+        android:layout_weight="0.60"
+        android:textColor="@android:color/holo_purple" />
 
-    <CheckedTextView
-        android:text="CheckedTextView"
+    <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/CourseACheck"
-        android:layout_weight="1" />
-
-    <CheckedTextView
-        android:text="CheckedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/CourseXCheck"
-        android:layout_weight="1" />
-
-    <CheckedTextView
-        android:text="CheckedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/CourseBCheck"
-        android:layout_weight="1" />
+        android:layout_height="49dp"
+        android:id="@+id/dateMatchTV"
+        android:layout_weight="0.43"
+        android:textColor="@android:color/holo_green_dark" />
 
 </LinearLayout>

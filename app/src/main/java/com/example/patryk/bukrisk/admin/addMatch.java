@@ -251,12 +251,12 @@ public class addMatch extends Fragment {
                     java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
 
                     A = curse[0];
-                    D = curse[1];
-                    B = curse[2];
+                    D = curse[2];
+                    B = curse[1];
 
                     curseATV.setText("" + df.format(curse[0]));
-                    curseDrawTV.setText("" + df.format(curse[1]));
-                    curseBTV.setText("" + df.format(curse[2]));
+                    curseDrawTV.setText("" + df.format(curse[2]));
+                    curseBTV.setText("" + df.format(curse[1]));
 
                     addBTN.setEnabled(true);
                     //calculateCurse.setEnabled(false);
@@ -374,6 +374,7 @@ public class addMatch extends Fragment {
     }
 
     private double[] setCurse(double a, double b) {
+
         double[] course = new double[3];
 
         double sub = Math.abs(a-b);

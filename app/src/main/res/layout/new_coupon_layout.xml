@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
@@ -9,9 +10,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="13dp"
         android:id="@+id/newCouponTV"
+        android:textSize="20sp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark" />
 
     <ListView
         android:layout_width="match_parent"
@@ -26,6 +29,8 @@
         android:text="@string/betInCoupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/currentMatchesTV"
         android:layout_marginBottom="168dp"
@@ -45,8 +50,10 @@
         android:text="@string/currentMatches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="11dp"
         android:id="@+id/currentMatchesTV"
+        android:textSize="20sp"
         android:textAlignment="center"
         android:layout_below="@+id/nameOfCouponET"
         android:layout_alignParentStart="true"
@@ -58,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addCouponBtn"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_alignTop="@+id/nameOfCouponET"
         android:layout_alignParentEnd="true" />
 
@@ -65,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:ems="10"
+        android:ems="8"
         android:layout_marginRight="200dp"
         android:id="@+id/nameOfCouponET"
         android:layout_alignBaseline="@+id/nameOfCoupon"
@@ -78,8 +86,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="39dp"
+        android:textSize="20sp"
         android:id="@+id/nameOfCoupon"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_below="@+id/newCouponTV"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="19dp" />
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

@@ -4,14 +4,18 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +48,7 @@ import java.util.HashMap;
 public class newCoupon extends Fragment {
 
     ProgressDialog progressDialog;
+
 
     String nameU;
     String date;
@@ -85,6 +90,25 @@ public class newCoupon extends Fragment {
         nameOfCouponET = (EditText) myView.findViewById(R.id.nameOfCouponET);
 
         matchesLV = (ListView) myView.findViewById(R.id.currentMatchesLV);
+        matchesLV.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+            {
+
+                Matches m = matches.get(position);
+
+                String nameM = m.getMatch().toString();
+                String dateM = m.getDate().toString();
+                String homeM = m.getA().toString();
+                String drawM = m.getX().toString();
+                String awayM = m.getB().toString();
+
+                //Toast.makeText(myView.getContext(),nameM + dateM + homeM + drawM + awayM ,Toast.LENGTH_SHORT).show();
+                showMatchDetail(nameM,dateM,homeM,drawM,awayM); // nie dziala ustawianie tekstu !
+            }
+        });
+
         betsLV = (ListView) myView.findViewById(R.id.betInCouponLV);
 
         addBtn = (Button) myView.findViewById(R.id.addCouponBtn);
@@ -113,12 +137,12 @@ public class newCoupon extends Fragment {
         }
 
 
-      date = year + "-" + month1 + "-" + day1;
+        date = year + "-" + month1 + "-" + day1;
 
         matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(),matches);
         matchesLV.setAdapter(matchesCustomAdapter);
 
-        String cars[] = {"Mercedes", "Fiat", "Ferrari", "Aston Martin", "Lamborghini", "Skoda", "Volkswagen", "Audi", "Citroen"};
+        String cars[] = {"Mercedes", "Fiat"};
 
         ArrayAdapter adapter = new ArrayAdapter(myView.getContext(), android.R.layout.simple_list_item_1, cars);
         betsLV.setAdapter(adapter);
@@ -146,6 +170,86 @@ public class newCoupon extends Fragment {
         });
 
         return myView;
+    }
+
+    private void showMatchDetail(String name, String date, String home, String draw, String away)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
+        builder.setTitle(R.string.matchDetail);
+        View viewInflated = LayoutInflater.from(myView.getContext()).inflate(R.layout.match_detail_alert_dialog_layout, (ViewGroup) getView(), false);
+
+        final TextView nameTV = (TextView) viewInflated.findViewById(R.id.showNameDetail);
+        final TextView dateTV = (TextView) viewInflated.findViewById(R.id.showDateDetail);
+
+        final TextView teamATV = (TextView) viewInflated.findViewById(R.id.homeCourseDetailTV);
+        final TextView drawTV = (TextView) viewInflated.findViewById(R.id.drawCourseDetailTV);
+        final TextView teamBTV = (TextView) viewInflated.findViewById(R.id.awayCourseDetailTV);
+
+        final RadioButton teamARB = (RadioButton)  viewInflated.findViewById(R.id.homeRadioBtn);
+        final RadioButton drawRB = (RadioButton)  viewInflated.findViewById(R.id.drawRadioBtn);
+        final RadioButton teamBRB = (RadioButton)  viewInflated.findViewById(R.id.awayRadioBtn);
+
+
+
+            nameTV.setText("" + name);
+            dateTV.setText("" + date);
+            teamATV.setText("" + home);
+            drawTV.setText("" + draw);
+            teamBTV.setText("" + away);
+
+
+        //nameTV.setText("DUPA !");
+
+
+       RadioGroup radioGroup = (RadioGroup)viewInflated.findViewById(R.id.typeRBG);
+        //teamARB.setSelected(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+
+                if (teamARB.isChecked()) {
+
+
+                }
+                if (drawRB.isChecked()) {
+
+
+
+
+
+                }
+                if (teamBRB.isChecked()) {
+
+                }
+
+            }
+        });
+
+
+
+        builder.setView(viewInflated)
+                .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+                    }
+                })
+                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }});
+
+        android.app.AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void getTeam()
@@ -248,7 +352,7 @@ public class newCoupon extends Fragment {
                             String matchName = teamAName + " - " + teamBName;
                             matchHash.put(matchName,idMatch);
 
-                            match = new Matches(matchName,""+teamA,""+draw,""+teamB );
+                            match = new Matches(matchName,""+teamA,""+draw,""+teamB,data);
 
                             matches.add(match);
                             matchesCustomAdapter.notifyDataSetChanged();

@@ -29,14 +29,10 @@ public class NewCouponMatchesCustomAdapter extends ArrayAdapter<Matches> {
         }
 
         TextView matchName = (TextView) convertView.findViewById(R.id.matchNewCouponTV);
-        CheckedTextView A = (CheckedTextView) convertView.findViewById(R.id.CourseACheck);
-        CheckedTextView X = (CheckedTextView) convertView.findViewById(R.id.CourseXCheck);
-        CheckedTextView B = (CheckedTextView) convertView.findViewById(R.id.CourseBCheck);
+        TextView date = (TextView) convertView.findViewById(R.id.dateMatchTV);
 
         matchName.setText(match.match);
-        A.setText("" + match.A);
-        X.setText("" + match.X);
-        B.setText("" + match.B);
+        date.setText("" + match.date);
 
 
         return convertView;
