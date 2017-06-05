@@ -10,7 +10,7 @@
         android:layout_width="196dp"
         android:layout_height="49dp"
         android:id="@+id/betMatch"
-        android:layout_weight="0.60"
+        android:layout_weight="0.28"
         android:textColor="@android:color/holo_purple" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="49dp"
         android:id="@+id/userType"
         android:textColor="@android:color/holo_green_dark"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.53" />
 
     <TextView
         android:text="TextView"

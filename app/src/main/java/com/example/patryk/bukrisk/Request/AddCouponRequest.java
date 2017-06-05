@@ -14,11 +14,12 @@ public class AddCouponRequest  extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/AddCoupon.php";
     private Map<String, String> params;
 
-    public AddCouponRequest(String id_user, String name, String date, String total_course, String risk, String to_win, Response.Listener<String> listener) {
+    public AddCouponRequest(String id_user, String name, String money,String date, String total_course, String risk, String to_win, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("id_user", id_user);
         params.put("name", name);
+        params.put("money", money);
         params.put("date", date);
         params.put("total_course", total_course);
         params.put("risk", risk);

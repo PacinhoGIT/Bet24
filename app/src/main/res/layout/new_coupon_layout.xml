@@ -21,53 +21,22 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/nameOfCouponET"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="47dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="100dp"
         android:id="@+id/currentMatchesLV" />
-
-    <TextView
-        android:text="@string/betInCoupon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/currentMatchesTV"
-        android:layout_marginBottom="168dp"
-        android:id="@+id/betInCouponTV"
-        android:layout_alignEnd="@+id/currentMatchesTV"
-        android:textAlignment="center" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@+id/betInCouponTV"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/betInCouponLV" />
 
     <TextView
         android:text="@string/currentMatches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="50dp"
         android:id="@+id/currentMatchesTV"
         android:textSize="20sp"
         android:textAlignment="center"
         android:layout_below="@+id/nameOfCouponET"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/addCouponBtn"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:text="@string/addTeamBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addCouponBtn"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_alignTop="@+id/nameOfCouponET"
         android:layout_alignParentEnd="true" />
 
     <EditText
@@ -82,11 +51,59 @@
         android:layout_marginStart="39dp"
         android:layout_toStartOf="@+id/addCouponBtn" />
 
+    <Button
+        android:text="@string/betInCoupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:id="@+id/showBetsInCouponBTN"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/nameOfCoupon" />
+
+    <Button
+        android:text="@string/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveCouponBTN"
+        android:layout_alignBaseline="@+id/showBetsInCouponBTN"
+        android:layout_alignBottom="@+id/showBetsInCouponBTN"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="41dp" />
+
+    <Button
+        android:text="@string/addTeamBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addCouponBtn"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/nameOfCoupon"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/moneyTV"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/addCouponBtn"
+        android:layout_alignEnd="@+id/nameOfCoupon" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/nameOfCouponET"
+        android:layout_alignStart="@+id/nameOfCouponET"
+        android:id="@+id/moneyET"
+        android:layout_toStartOf="@+id/addCouponBtn" />
+
     <TextView
         android:text="@string/nameOfCoupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
+        android:layout_marginTop="35dp"
         android:textSize="20sp"
         android:id="@+id/nameOfCoupon"
         android:layout_marginStart="15dp"
@@ -94,11 +111,4 @@
         android:layout_below="@+id/newCouponTV"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="@string/addTeamBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/addBetsToCouponBtn" />
 </RelativeLayout>
