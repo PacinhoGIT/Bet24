@@ -37,6 +37,7 @@ import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.Request.GetWalletRequest;
 import com.example.patryk.bukrisk.Request.LoginRequest;
 import com.example.patryk.bukrisk.Request.UpdateCouponRequest;
+import com.example.patryk.bukrisk.Request.UpdateMatchesRequest;
 import com.example.patryk.bukrisk.Request.updatePaymentsRequest;
 import com.example.patryk.bukrisk.Request.updateWalletRequest;
 import com.example.patryk.bukrisk.adapter.Bets;
@@ -73,7 +74,7 @@ public class newCoupon extends Fragment {
     double money;
     double valueS;
 
-    String type="A";
+    String type = "A";
 
     private int year;
     private int month;
@@ -94,12 +95,12 @@ public class newCoupon extends Fragment {
     NewCouponMatchesCustomAdapter matchesCustomAdapter;
     ShowBetsInCouponCustomAdapter betsCustomAdapter;
 
-    TextView newCoupon,nameOfCoupon,currentMacthes,moneyTV;
+    TextView newCoupon, nameOfCoupon, currentMacthes, moneyTV;
     EditText nameOfCouponET;
     EditText moneyValue;
     ListView matchesLV;
 
-    Button addBtn,save,betsInCoupon;
+    Button addBtn, save, betsInCoupon;
 
 
     View myView;
@@ -122,11 +123,9 @@ public class newCoupon extends Fragment {
         matchesLV = (ListView) myView.findViewById(R.id.currentMatchesLV);
         matchesLV.setEnabled(false);
 
-        matchesLV.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        matchesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
-            {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
                 Matches m = matches.get(position);
 
@@ -138,7 +137,7 @@ public class newCoupon extends Fragment {
                 String awayM = m.getB().toString();
 
                 //Toast.makeText(myView.getContext(),nameM + dateM + homeM + drawM + awayM ,Toast.LENGTH_SHORT).show();
-                showMatchDetail(id,nameM,dateM,homeM,drawM,awayM);
+                showMatchDetail(id, nameM, dateM, homeM, drawM, awayM);
             }
         });
 
@@ -148,7 +147,7 @@ public class newCoupon extends Fragment {
         matches = new ArrayList<>();
         bets = new ArrayList<>();
 
-        Bets b = new Bets("","Match","","Type","Course/Risk","");
+        Bets b = new Bets("", "Match", "", "Type", "Course/Risk", "");
         bets.add(b);
 
         teamHash = new HashMap<>();
@@ -167,19 +166,17 @@ public class newCoupon extends Fragment {
 
         if (day < 10) {
             day1 = "0" + day;
-        }
-        else
-        {
-            day1=""+day;
+        } else {
+            day1 = "" + day;
         }
 
 
         date = year + "-" + month1 + "-" + day1;
 
-        matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(),matches);
+        matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(), matches);
         matchesLV.setAdapter(matchesCustomAdapter);
 
-        betsCustomAdapter = new ShowBetsInCouponCustomAdapter(myView.getContext(),bets);
+        betsCustomAdapter = new ShowBetsInCouponCustomAdapter(myView.getContext(), bets);
 
 
         Bundle bundle = getArguments();
@@ -192,26 +189,20 @@ public class newCoupon extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(nameOfCouponET.getText().toString()!=null || moneyValue.getText().toString()!=null ) {
+                if (nameOfCouponET.getText().toString() != null || moneyValue.getText().toString() != null) {
 
-                    try{
-                        money=Double.parseDouble(moneyValue.getText().toString());
-                        if(valueS>money) {
+                    try {
+                        money = Double.parseDouble(moneyValue.getText().toString());
+                        if (valueS > money) {
                             addCoupon();
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(myView.getContext(), "You don't have enough money !", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    catch (Exception e1)
-                    {
+                    } catch (Exception e1) {
                         Toast.makeText(myView.getContext(), "Incorrect money value !", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else
-                {
+                } else {
                     Toast.makeText(myView.getContext(), "Name or Money can't be empty !", Toast.LENGTH_SHORT).show();
                 }
 
@@ -241,8 +232,7 @@ public class newCoupon extends Fragment {
         return myView;
     }
 
-    private void updateCourse(String[] args)
-    {
+    private void updateCourse(String[] args) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -254,34 +244,13 @@ public class newCoupon extends Fragment {
 
 
                         progressDialog.dismiss();
-                        new AlertDialog.Builder(myView.getContext())
-                                .setTitle(R.string.addBets)
-                                .setMessage(R.string.success)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
 
-                                        Bundle args = new Bundle();
-                                        args.putString("nameUser", nameU);
-                                        args.putInt("id_user", id_user);
+                        updateMatches();
 
-                                        newCoupon wU = new newCoupon();
-                                        wU.setArguments(args);
-
-                                        FragmentManager manager = getFragmentManager();
-                                        manager.beginTransaction()
-                                                .replace(R.id.content_home_user,
-                                                        wU,
-                                                        wU.getTag()
-                                                ).commit();
-
-                                        dialog.dismiss();
-                                    }
-
-                                })
-                                .show();
-
+                        progressDialog = new ProgressDialog(myView.getContext());
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("Please Wait . Update Macthes in progress . . .");
+                        progressDialog.show();
 
 
                     } else {
@@ -294,37 +263,36 @@ public class newCoupon extends Fragment {
             }
         };
 
-        UpdateCouponRequest uW = new UpdateCouponRequest("" + args[0], "" + args[1],""+args[2],""+args[3], responseListener);
+        UpdateCouponRequest uW = new UpdateCouponRequest("" + args[0], "" + args[1], "" + args[2], "" + args[3], responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(uW);
 
     }
 
-    private void showBetsInCoupon()
-    {
+    private void showBetsInCoupon() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
         builder.setTitle(R.string.betInCoupon);
         View viewInflated = LayoutInflater.from(myView.getContext()).inflate(R.layout.show_bets_in_coupon_alert_dialog, (ViewGroup) getView(), false);
 
         ListView betsLV = (ListView) viewInflated.findViewById(R.id.betsInCouponLV);
-        betsCustomAdapter = new ShowBetsInCouponCustomAdapter(myView.getContext(),bets);
+        betsCustomAdapter = new ShowBetsInCouponCustomAdapter(myView.getContext(), bets);
         betsLV.setAdapter(betsCustomAdapter);
         betsCustomAdapter.notifyDataSetChanged();
 
         final TextView total = (TextView) viewInflated.findViewById(R.id.totalTV);
 
 
-         Double totalRiskValue = 0.0;
-         Double totalCourseValue = 0.0;
-         Double toWinValue = 0.0;
+        Double totalRiskValue = 0.0;
+        Double totalCourseValue = 0.0;
+        Double toWinValue = 0.0;
 
 
-        if(bets.size()>0) {
+        if (bets.size() > 0) {
             for (int i = 1; i < bets.size(); i++) {
-                Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",","."));
+                Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",", "."));
                 totalCourseValue += cValue;
 
-                Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",","."));
+                Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",", "."));
                 totalRiskValue += rValue;
             }
 
@@ -332,23 +300,21 @@ public class newCoupon extends Fragment {
 
 
         }
-        java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
 
 
         total.setText(" Total Risk : " + df.format(totalRiskValue) + " %\n Total Course : " + df.format(totalCourseValue) + "\n To Win : " + df.format(toWinValue) + " PLN");
 
         updateCouponArgs = new String[4];
 
-        updateCouponArgs[0]=""+df.format(totalCourseValue).replace(",",".");
-        updateCouponArgs[1]=""+df.format(totalRiskValue).replace(",",".");
-        updateCouponArgs[2]=""+df.format(toWinValue).replace(",",".");
-        updateCouponArgs[3]=""+id_coupon;
+        updateCouponArgs[0] = "" + df.format(totalCourseValue).replace(",", ".");
+        updateCouponArgs[1] = "" + df.format(totalRiskValue).replace(",", ".");
+        updateCouponArgs[2] = "" + df.format(toWinValue).replace(",", ".");
+        updateCouponArgs[3] = "" + id_coupon;
 
-        betsLV.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        betsLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
-            {
+            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
 
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(myView.getContext());
 
@@ -366,15 +332,14 @@ public class newCoupon extends Fragment {
                                 Double totalCourseValue = 0.0;
                                 Double toWinValue = 0.0;
 
-                                if(bets.size()>0) {
+                                if (bets.size() > 0) {
                                     for (int i = 1; i < bets.size(); i++) {
 
 
-
-                                        Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",","."));
+                                        Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",", "."));
                                         totalCourseValue += cValue;
 
-                                        Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",","."));
+                                        Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",", "."));
                                         totalRiskValue += rValue;
                                     }
 
@@ -382,20 +347,19 @@ public class newCoupon extends Fragment {
 
 
                                 }
-                                java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+                                java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
 
 
                                 total.setText(" Total Risk : " + df.format(totalRiskValue) + " %\n Total Course : " + df.format(totalCourseValue) + "\n To Win : " + df.format(toWinValue) + " PLN");
 
                                 updateCouponArgs = new String[4];
 
-                                updateCouponArgs[0]=""+df.format(totalCourseValue);
-                                updateCouponArgs[1]=""+df.format(totalRiskValue);
-                                updateCouponArgs[2]=""+df.format(toWinValue);
-                                updateCouponArgs[3]=""+id_coupon;
+                                updateCouponArgs[0] = "" + df.format(totalCourseValue);
+                                updateCouponArgs[1] = "" + df.format(totalRiskValue);
+                                updateCouponArgs[2] = "" + df.format(toWinValue);
+                                updateCouponArgs[3] = "" + id_coupon;
 
-                                if(bets.size()==1)
-                                {
+                                if (bets.size() == 1) {
                                     save.setEnabled(false);
                                 }
 
@@ -422,14 +386,14 @@ public class newCoupon extends Fragment {
 
                         dialog.dismiss();
 
-                    }});
+                    }
+                });
 
         android.app.AlertDialog alert = builder.create();
         alert.show();
     }
 
-    private void showMatchDetail(final String id,final String name, String date, final String home, final String draw, final String away)
-    {
+    private void showMatchDetail(final String id, final String name, String date, final String home, final String draw, final String away) {
         AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
         builder.setTitle(R.string.matchDetail);
         View viewInflated = LayoutInflater.from(myView.getContext()).inflate(R.layout.match_detail_alert_dialog_layout, (ViewGroup) getView(), false);
@@ -441,19 +405,18 @@ public class newCoupon extends Fragment {
         final TextView drawTV = (TextView) viewInflated.findViewById(R.id.drawCourseDetailTV);
         final TextView teamBTV = (TextView) viewInflated.findViewById(R.id.awayCourseDetailTV);
 
-        final RadioButton teamARB = (RadioButton)  viewInflated.findViewById(R.id.homeRadioBtn);
-        final RadioButton drawRB = (RadioButton)  viewInflated.findViewById(R.id.drawRadioBtn);
-        final RadioButton teamBRB = (RadioButton)  viewInflated.findViewById(R.id.awayRadioBtn);
+        final RadioButton teamARB = (RadioButton) viewInflated.findViewById(R.id.homeRadioBtn);
+        final RadioButton drawRB = (RadioButton) viewInflated.findViewById(R.id.drawRadioBtn);
+        final RadioButton teamBRB = (RadioButton) viewInflated.findViewById(R.id.awayRadioBtn);
 
 
+        nameTV.setText("" + name);
+        dateTV.setText("" + date);
+        teamATV.setText("" + home);
+        drawTV.setText("" + draw);
+        teamBTV.setText("" + away);
 
-            nameTV.setText("" + name);
-            dateTV.setText("" + date);
-            teamATV.setText("" + home);
-            drawTV.setText("" + draw);
-            teamBTV.setText("" + away);
-
-        RadioGroup radioGroup = (RadioGroup)viewInflated.findViewById(R.id.typeRBG);
+        RadioGroup radioGroup = (RadioGroup) viewInflated.findViewById(R.id.typeRBG);
         //teamARB.setSelected(true);
 
 
@@ -480,51 +443,43 @@ public class newCoupon extends Fragment {
         });
 
 
-
         builder.setView(viewInflated)
                 .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        double a,x,b;
-                        double userType=0;
+                        double a, x, b;
+                        double userType = 0;
 
                         a = Double.valueOf(home);
                         x = Double.valueOf(draw);
                         b = Double.valueOf(away);
 
-                        if(type.equals("A"))
-                        {
-                            userType=a;
+                        if (type.equals("A")) {
+                            userType = a;
 
-                        }
-                        else if(type.equals("X"))
-                        {
+                        } else if (type.equals("X")) {
                             userType = x;
-                        }
-                        else if(type.equals("B"))
-                        {
+                        } else if (type.equals("B")) {
                             userType = b;
                         }
 
-                        Double risk = (userType*100) / (a+b+x);
+                        Double risk = (userType * 100) / (a + b + x);
 
                         String id_match = id;
-                        java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+                        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
 
-                        String riskS = ""+ df.format(risk);
+                        String riskS = "" + df.format(risk);
 
-                        int temp=0;
-                        int temp2=0;
+                        int temp = 0;
+                        int temp2 = 0;
 
-                        if(bets.size()>1)
-                        {
+                        if (bets.size() > 1) {
                             save.setEnabled(true);
                         }
 
-                        if(bets.size()==1)
-                        {
-                            Bets bet = new Bets(""+id_match,name,""+id_coupon,type,""+userType,""+riskS);
+                        if (bets.size() == 1) {
+                            Bets bet = new Bets("" + id_match, name, "" + id_coupon, type, "" + userType, "" + riskS);
 
                             bets.add(bet);
                             betsCustomAdapter.notifyDataSetChanged();
@@ -535,47 +490,42 @@ public class newCoupon extends Fragment {
                             temp2++;
 
 
-                        }
-                        else if(bets.size()!=0 && bets.size()!=1){
+                        } else if (bets.size() != 0 && bets.size() != 1) {
 
                             for (int i = 1; i < bets.size(); i++) {
 
-                               // Toast.makeText(myView.getContext(),"Bets id : " + bets.get(i).getId_match() + "select id " + id_match,Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(myView.getContext(),"Bets id : " + bets.get(i).getId_match() + "select id " + id_match,Toast.LENGTH_SHORT).show();
                                 if ((bets.get(i).getId_match()).equals(id_match)) {
-                                   temp++;
+                                    temp++;
                                 }
 
-                                }
-
                             }
 
-                            if(temp>0)
-                            {
-                                AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
-                                alertDialog.setTitle(R.string.addBets);
-                                alertDialog.setMessage("Failed ! This match is already added ");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
-                            }
+                        }
 
-                            if(temp==0 && bets.size()!=1 && temp2==0) {
+                        if (temp > 0) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
+                            alertDialog.setTitle(R.string.addBets);
+                            alertDialog.setMessage("Failed ! This match is already added ");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
 
-                                Bets bet = new Bets("" + id_match, name, "" + id_coupon, type, "" + userType, "" + df.format(risk));
+                        if (temp == 0 && bets.size() != 1 && temp2 == 0) {
 
-                                bets.add(bet);
-                                betsCustomAdapter.notifyDataSetChanged();
+                            Bets bet = new Bets("" + id_match, name, "" + id_coupon, type, "" + userType, "" + df.format(risk));
 
-                                succesAddBetAlert();
-                                save.setEnabled(true);
-                            }
+                            bets.add(bet);
+                            betsCustomAdapter.notifyDataSetChanged();
 
-
-
+                            succesAddBetAlert();
+                            save.setEnabled(true);
+                        }
 
 
                     }
@@ -586,14 +536,14 @@ public class newCoupon extends Fragment {
 
                         dialog.dismiss();
 
-                    }});
+                    }
+                });
 
         android.app.AlertDialog alert = builder.create();
         alert.show();
     }
 
-    private void succesAddBetAlert()
-    {
+    private void succesAddBetAlert() {
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Please Wait ...");
@@ -623,11 +573,10 @@ public class newCoupon extends Fragment {
 
 
                     }
-                },500);
+                }, 500);
     }
 
-    private void getTeam()
-    {
+    private void getTeam() {
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching data from the Server.");
@@ -656,14 +605,12 @@ public class newCoupon extends Fragment {
                             int id_team = jsonValues.get(i).getInt("id_team");
                             String name = jsonValues.get(i).getString("name");
 
-                            teamHash.put(id_team,name);
+                            teamHash.put(id_team, name);
 
                         }
 
 
-
                         //Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
-
 
 
                         getMatches();
@@ -678,7 +625,7 @@ public class newCoupon extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -689,8 +636,7 @@ public class newCoupon extends Fragment {
         queue.add(gTR);
     }
 
-    private void getMatches()
-    {
+    private void getMatches() {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -724,9 +670,9 @@ public class newCoupon extends Fragment {
                             String teamBName = teamHash.get(id_away);
 
                             String matchName = teamAName + " - " + teamBName;
-                            matchHash.put(matchName,idMatch);
+                            matchHash.put(matchName, idMatch);
 
-                            match = new Matches(""+idMatch,matchName,""+teamA,""+draw,""+teamB,data);
+                            match = new Matches("" + idMatch, matchName, "" + teamA, "" + draw, "" + teamB, data);
 
                             matches.add(match);
 
@@ -734,7 +680,7 @@ public class newCoupon extends Fragment {
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
 
-                       getWallet();
+                        getWallet();
 
 
                     } else {
@@ -745,7 +691,7 @@ public class newCoupon extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -757,8 +703,7 @@ public class newCoupon extends Fragment {
 
     }
 
-    private void addCoupon()
-    {
+    private void addCoupon() {
 
         final String name = nameOfCouponET.getText().toString();
 
@@ -776,26 +721,25 @@ public class newCoupon extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
 
-                     getCouponID(name);
+                        getCouponID(name);
 
-                    } else {}
+                    } else {
+                    }
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         };
 
 
-
-        AddCouponRequest addCoupon = new AddCouponRequest(""+id_user,""+name,""+money,date,"0","0","0", responseListener);
+        AddCouponRequest addCoupon = new AddCouponRequest("" + id_user, "" + name, "" + money, date, "0", "0", "0", responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(addCoupon);
     }
 
-    private void getCouponID(String name)
-    {
+    private void getCouponID(String name) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -818,8 +762,7 @@ public class newCoupon extends Fragment {
                         new AlertDialog.Builder(myView.getContext())
                                 .setTitle(R.string.newCoupon)
                                 .setMessage(R.string.success)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                                {
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
@@ -845,17 +788,16 @@ public class newCoupon extends Fragment {
         queue.add(getCouponID);
     }
 
-    private void addBets()
-    {
+    private void addBets() {
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Adding ..." );
+        progressDialog.setMessage("Adding ...");
         progressDialog.show();
 
 
-        for(int i=1;i<bets.size();i++) {
+        for (int i = 1; i < bets.size(); i++) {
 
-            final int i1=i;
+            final int i1 = i;
 
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
@@ -865,10 +807,9 @@ public class newCoupon extends Fragment {
                         boolean success = jsonResponse.getBoolean("success");
                         if (success) {
 
-                        if(i1==bets.size()-1)
-                        {
-                          updateWallet();
-                        }
+                            if (i1 == bets.size() - 1) {
+                                updateWallet();
+                            }
 
                         } else {
                         }
@@ -887,16 +828,15 @@ public class newCoupon extends Fragment {
             String id_coupon = b.getId_coupon().toString();
             String type = b.getType().toString();
             String course = b.getCourse().toString();
-            String risk = b.getRisk().toString().replace(",",".");
+            String risk = b.getRisk().toString().replace(",", ".");
 
-            AddBetsRequest addBetss = new AddBetsRequest(id_match,id_coupon,type,course,risk, responseListener);
+            AddBetsRequest addBetss = new AddBetsRequest(id_match, id_coupon, type, course, risk, responseListener);
             RequestQueue queue = Volley.newRequestQueue(myView.getContext());
             queue.add(addBetss);
         }
     }
 
-    private void getWallet()
-    {
+    private void getWallet() {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -913,8 +853,7 @@ public class newCoupon extends Fragment {
                         betsInCoupon.setEnabled(true);
                         matchesCustomAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
-                        Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
 
 
                     } else {
@@ -928,12 +867,12 @@ public class newCoupon extends Fragment {
         };
 
 
-        GetWalletRequest walletRequest = new GetWalletRequest(""+id_user, responseListener);
+        GetWalletRequest walletRequest = new GetWalletRequest("" + id_user, responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(walletRequest);
     }
 
-    private void updateWallet(){
+    private void updateWallet() {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -957,10 +896,130 @@ public class newCoupon extends Fragment {
             }
         };
 
-        updateWalletRequest uW = new updateWalletRequest("" + (valueS-money), "" + id_user, responseListener);
+        updateWalletRequest uW = new updateWalletRequest("" + (valueS - money), "" + id_user, responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(uW);
-}
+    }
+
+    private void updateMatches() {
+
+        Double teamA, draw, teamB;
+
+        ArrayList<Matches> matchCourseData = new ArrayList<>();
+
+        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
 
 
+        for (int i = 0; i < bets.size(); i++) {
+
+            String idMatch = bets.get(i).getId_match();
+
+            for (int i1 = 0; i1 < matches.size(); i1++) {
+
+                if (idMatch.equals(matches.get(i1).getId())) {
+
+                    if (bets.get(i).getType().equals("A")) {
+
+                        if ((Double.valueOf(matches.get(i1).getA().replace(",", "."))) > 1.5) {
+                            teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) - 0.01;
+                            draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
+                            teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) + 0.01;
+
+                            Matches m = new Matches(matches.get(i1).getId(),"",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            matchCourseData.add(m);
+
+                        }
+                    } else if (bets.get(i).getType().equals("B")) {
+
+                        if ((Double.valueOf(matches.get(i1).getB().replace(",", "."))) > 1.5) {
+
+                            teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) + 0.01;
+                            draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
+                            teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) - 0.01;
+
+                            Matches m = new Matches(matches.get(i1).getId(),"",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            matchCourseData.add(m);
+                        }
+                    } else if (bets.get(i).getType().equals("X")) {
+
+                        if ((Double.valueOf(matches.get(i1).getX().replace(",", "."))) > 1.5) {
+
+                            teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) + 0.01;
+                            draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) - 0.01;
+                            teamB = (Double.valueOf(matches.get(i).getB().replace(",", "."))) + 0.01;
+
+                            Matches m = new Matches(matches.get(i1).getId(),"",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            matchCourseData.add(m);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        updateMatchCourse(matchCourseData);
+    }
+
+    private void updateMatchCourse(final ArrayList<Matches> matchData)
+    {
+
+        for (int i = 0; i < matchData.size(); i++) {
+
+            final int i1 = i;
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        if (success) {
+
+                            if (i1 == matchData.size() - 1) {
+
+
+                                                Bundle args = new Bundle();
+                                                args.putString("nameUser", nameU);
+                                                args.putInt("id_user", id_user);
+
+                                                newCoupon wU = new newCoupon();
+                                                wU.setArguments(args);
+
+                                                FragmentManager manager = getFragmentManager();
+                                                manager.beginTransaction()
+                                                        .replace(R.id.content_home_user,
+                                                                wU,
+                                                                wU.getTag()
+                                                        ).commit();
+
+                                progressDialog.dismiss();
+
+                                Toast.makeText(myView.getContext(), "Update Matches succes !", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                        }
+
+                    } catch (JSONException e) {
+
+                        Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+            //Bets bet = new Bets(""+id_match,name,""+id_coupon,type,""+userType,""+risk);
+
+            Matches m = matchData.get(i);
+            String id_match = m.getId().toString();
+            String a = m.getA().toString().replace(",", ".");
+            String x = m.getX().toString().replace(",", ".");
+            String b = m.getB().toString().replace(",", ".");
+
+
+            UpdateMatchesRequest UMR = new UpdateMatchesRequest(a, x, b,id_match, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+            queue.add(UMR);
+        }
+    }
 }
+
