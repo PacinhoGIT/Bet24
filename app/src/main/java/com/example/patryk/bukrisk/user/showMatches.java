@@ -69,9 +69,9 @@ public class showMatches extends Fragment {
 
         matchesListView.setAdapter(matchesCustomAdapter);
 
-        match = new Matches("Mecz / Data", "Home","Draw","Away","");
+        match = new Matches("","Mecz / Data", "Home","Draw","Away","");
         matches.add(match);
-        match = new Matches("", "","","","");
+        match = new Matches("","", "","","","");
         matches.add(match);
         matchesCustomAdapter.notifyDataSetChanged();
 
@@ -116,7 +116,7 @@ public class showMatches extends Fragment {
 
                         progressDialog.dismiss();
 
-                        Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
 
                         getDataSucces =  true;
 
@@ -166,6 +166,7 @@ public class showMatches extends Fragment {
 
                             jsonValues.add(jsonArray.getJSONObject(i));
 
+                            int id = jsonValues.get(i).getInt("id_match");
                             int id_home = jsonValues.get(i).getInt("id_home");
                             int id_away = jsonValues.get(i).getInt("id_away");
                             String data = jsonValues.get(i).getString("date");
@@ -178,7 +179,7 @@ public class showMatches extends Fragment {
 
                             String matchName = teamAName + " - " + teamBName;
 
-                            match = new Matches(matchName+"\n "+data,""+teamA,""+draw,""+teamB,"");
+                            match = new Matches(""+id,matchName+"\n "+data,""+teamA,""+draw,""+teamB,"");
 
                             matches.add(match);
                             matchesCustomAdapter.notifyDataSetChanged();

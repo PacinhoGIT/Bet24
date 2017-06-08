@@ -30,10 +30,12 @@ public class ShowBetsInCouponCustomAdapter extends ArrayAdapter<Bets> {
         TextView matchName = (TextView) convertView.findViewById(R.id.betMatch);
         TextView type = (TextView) convertView.findViewById(R.id.userType);
         TextView typeCourse = (TextView) convertView.findViewById(R.id.typeCourse);
+       // TextView risk = (TextView) convertView.findViewById(R.id.riskTV);
 
         matchName.setText(bets.name);
         type.setText("" + bets.type);
-        typeCourse.setText("" + bets.course);
+        typeCourse.setText("" + bets.course +"\n"+bets.risk+"");
+        //risk.setText("" + bets.risk);
 
         return convertView;
     }

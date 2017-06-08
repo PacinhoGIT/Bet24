@@ -36,6 +36,7 @@ import com.example.patryk.bukrisk.Request.GetMatchesRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.Request.GetWalletRequest;
 import com.example.patryk.bukrisk.Request.LoginRequest;
+import com.example.patryk.bukrisk.Request.UpdateCouponRequest;
 import com.example.patryk.bukrisk.Request.updatePaymentsRequest;
 import com.example.patryk.bukrisk.Request.updateWalletRequest;
 import com.example.patryk.bukrisk.adapter.Bets;
@@ -83,6 +84,8 @@ public class newCoupon extends Fragment {
     HashMap<Integer, String> teamHash;
     HashMap<String, Integer> matchHash;
 
+    String[] updateCouponArgs = new String[4];
+
     Matches match;
 
     ArrayList<Matches> matches;
@@ -127,6 +130,7 @@ public class newCoupon extends Fragment {
 
                 Matches m = matches.get(position);
 
+                String id = m.getId().toString();
                 String nameM = m.getMatch().toString();
                 String dateM = m.getDate().toString();
                 String homeM = m.getA().toString();
@@ -134,7 +138,7 @@ public class newCoupon extends Fragment {
                 String awayM = m.getB().toString();
 
                 //Toast.makeText(myView.getContext(),nameM + dateM + homeM + drawM + awayM ,Toast.LENGTH_SHORT).show();
-                showMatchDetail(nameM,dateM,homeM,drawM,awayM);
+                showMatchDetail(id,nameM,dateM,homeM,drawM,awayM);
             }
         });
 
@@ -144,7 +148,7 @@ public class newCoupon extends Fragment {
         matches = new ArrayList<>();
         bets = new ArrayList<>();
 
-        Bets b = new Bets("","Match","","Type","Course","");
+        Bets b = new Bets("","Match","","Type","Course/Risk","");
         bets.add(b);
 
         teamHash = new HashMap<>();
@@ -222,6 +226,8 @@ public class newCoupon extends Fragment {
             }
         });
 
+        betsInCoupon.setEnabled(false);
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,7 +236,68 @@ public class newCoupon extends Fragment {
 
             }
         });
+
+        save.setEnabled(false);
         return myView;
+    }
+
+    private void updateCourse(String[] args)
+    {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+
+
+                        progressDialog.dismiss();
+                        new AlertDialog.Builder(myView.getContext())
+                                .setTitle(R.string.addBets)
+                                .setMessage(R.string.success)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Bundle args = new Bundle();
+                                        args.putString("nameUser", nameU);
+                                        args.putInt("id_user", id_user);
+
+                                        newCoupon wU = new newCoupon();
+                                        wU.setArguments(args);
+
+                                        FragmentManager manager = getFragmentManager();
+                                        manager.beginTransaction()
+                                                .replace(R.id.content_home_user,
+                                                        wU,
+                                                        wU.getTag()
+                                                ).commit();
+
+                                        dialog.dismiss();
+                                    }
+
+                                })
+                                .show();
+
+
+
+                    } else {
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        UpdateCouponRequest uW = new UpdateCouponRequest("" + args[0], "" + args[1],""+args[2],""+args[3], responseListener);
+        RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+        queue.add(uW);
+
     }
 
     private void showBetsInCoupon()
@@ -243,6 +310,39 @@ public class newCoupon extends Fragment {
         betsCustomAdapter = new ShowBetsInCouponCustomAdapter(myView.getContext(),bets);
         betsLV.setAdapter(betsCustomAdapter);
         betsCustomAdapter.notifyDataSetChanged();
+
+        final TextView total = (TextView) viewInflated.findViewById(R.id.totalTV);
+
+
+         Double totalRiskValue = 0.0;
+         Double totalCourseValue = 0.0;
+         Double toWinValue = 0.0;
+
+
+        if(bets.size()>0) {
+            for (int i = 1; i < bets.size(); i++) {
+                Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",","."));
+                totalCourseValue += cValue;
+
+                Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",","."));
+                totalRiskValue += rValue;
+            }
+
+            toWinValue = (totalCourseValue * money) * 0.8;
+
+
+        }
+        java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+
+
+        total.setText(" Total Risk : " + df.format(totalRiskValue) + " %\n Total Course : " + df.format(totalCourseValue) + "\n To Win : " + df.format(toWinValue) + " PLN");
+
+        updateCouponArgs = new String[4];
+
+        updateCouponArgs[0]=""+df.format(totalCourseValue).replace(",",".");
+        updateCouponArgs[1]=""+df.format(totalRiskValue).replace(",",".");
+        updateCouponArgs[2]=""+df.format(toWinValue).replace(",",".");
+        updateCouponArgs[3]=""+id_coupon;
 
         betsLV.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -261,6 +361,44 @@ public class newCoupon extends Fragment {
 
                                 bets.remove(position);
                                 betsCustomAdapter.notifyDataSetChanged();
+
+                                Double totalRiskValue = 0.0;
+                                Double totalCourseValue = 0.0;
+                                Double toWinValue = 0.0;
+
+                                if(bets.size()>0) {
+                                    for (int i = 1; i < bets.size(); i++) {
+
+
+
+                                        Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",","."));
+                                        totalCourseValue += cValue;
+
+                                        Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",","."));
+                                        totalRiskValue += rValue;
+                                    }
+
+                                    toWinValue = (totalCourseValue * money) * 0.8;
+
+
+                                }
+                                java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+
+
+                                total.setText(" Total Risk : " + df.format(totalRiskValue) + " %\n Total Course : " + df.format(totalCourseValue) + "\n To Win : " + df.format(toWinValue) + " PLN");
+
+                                updateCouponArgs = new String[4];
+
+                                updateCouponArgs[0]=""+df.format(totalCourseValue);
+                                updateCouponArgs[1]=""+df.format(totalRiskValue);
+                                updateCouponArgs[2]=""+df.format(toWinValue);
+                                updateCouponArgs[3]=""+id_coupon;
+
+                                if(bets.size()==1)
+                                {
+                                    save.setEnabled(false);
+                                }
+
 
                             }
                         })
@@ -290,7 +428,7 @@ public class newCoupon extends Fragment {
         alert.show();
     }
 
-    private void showMatchDetail(final String name, String date, final String home, final String draw, final String away)
+    private void showMatchDetail(final String id,final String name, String date, final String home, final String draw, final String away)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
         builder.setTitle(R.string.matchDetail);
@@ -371,44 +509,70 @@ public class newCoupon extends Fragment {
 
                         Double risk = (userType*100) / (a+b+x);
 
-                        int id_match = matchHash.get(name);
+                        String id_match = id;
                         java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+
+                        String riskS = ""+ df.format(risk);
+
+                        int temp=0;
+                        int temp2=0;
+
+                        if(bets.size()>1)
+                        {
+                            save.setEnabled(true);
+                        }
 
                         if(bets.size()==1)
                         {
-                            Bets bet = new Bets(""+id_match,name,""+id_coupon,type,""+userType,""+df.format(risk));
+                            Bets bet = new Bets(""+id_match,name,""+id_coupon,type,""+userType,""+riskS);
 
                             bets.add(bet);
                             betsCustomAdapter.notifyDataSetChanged();
                             succesAddBetAlert();
+
+                            save.setEnabled(true);
+
+                            temp2++;
+
+
                         }
-                        else {
+                        else if(bets.size()!=0 && bets.size()!=1){
 
                             for (int i = 1; i < bets.size(); i++) {
 
-                                if (Integer.parseInt(bets.get(i).getId_match()) == id_match) {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
-                                    alertDialog.setTitle(R.string.addBets);
-                                    alertDialog.setMessage("Failed ! This match is already added ");
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                    alertDialog.show();
-                                } else {
-                                    Bets bet = new Bets("" + id_match, name, "" + id_coupon, type, "" + userType, "" + df.format(risk));
-
-                                    bets.add(bet);
-                                    betsCustomAdapter.notifyDataSetChanged();
-
-                                    succesAddBetAlert();
+                               // Toast.makeText(myView.getContext(),"Bets id : " + bets.get(i).getId_match() + "select id " + id_match,Toast.LENGTH_SHORT).show();
+                                if ((bets.get(i).getId_match()).equals(id_match)) {
+                                   temp++;
+                                }
 
                                 }
 
                             }
-                        }
+
+                            if(temp>0)
+                            {
+                                AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
+                                alertDialog.setTitle(R.string.addBets);
+                                alertDialog.setMessage("Failed ! This match is already added ");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                            }
+
+                            if(temp==0 && bets.size()!=1 && temp2==0) {
+
+                                Bets bet = new Bets("" + id_match, name, "" + id_coupon, type, "" + userType, "" + df.format(risk));
+
+                                bets.add(bet);
+                                betsCustomAdapter.notifyDataSetChanged();
+
+                                succesAddBetAlert();
+                                save.setEnabled(true);
+                            }
 
 
 
@@ -496,9 +660,9 @@ public class newCoupon extends Fragment {
 
                         }
 
-                        progressDialog.dismiss();
 
-                        Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
+
+                        //Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
 
 
 
@@ -562,10 +726,10 @@ public class newCoupon extends Fragment {
                             String matchName = teamAName + " - " + teamBName;
                             matchHash.put(matchName,idMatch);
 
-                            match = new Matches(matchName,""+teamA,""+draw,""+teamB,data);
+                            match = new Matches(""+idMatch,matchName,""+teamA,""+draw,""+teamB,data);
 
                             matches.add(match);
-                            matchesCustomAdapter.notifyDataSetChanged();
+
 
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
@@ -685,8 +849,9 @@ public class newCoupon extends Fragment {
     {
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Adding ...");
+        progressDialog.setMessage("Adding ..." );
         progressDialog.show();
+
 
         for(int i=1;i<bets.size();i++) {
 
@@ -702,21 +867,7 @@ public class newCoupon extends Fragment {
 
                         if(i1==bets.size()-1)
                         {
-                            progressDialog.dismiss();
-                            new AlertDialog.Builder(myView.getContext())
-                                    .setTitle(R.string.addBets)
-                                    .setMessage(R.string.success)
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                          updateWallet();
-                                            dialog.dismiss();
-                                        }
-
-                                    })
-                                    .show();
+                          updateWallet();
                         }
 
                         } else {
@@ -736,7 +887,7 @@ public class newCoupon extends Fragment {
             String id_coupon = b.getId_coupon().toString();
             String type = b.getType().toString();
             String course = b.getCourse().toString();
-            String risk = b.getRisk().toString().replace(",",".");;
+            String risk = b.getRisk().toString().replace(",",".");
 
             AddBetsRequest addBetss = new AddBetsRequest(id_match,id_coupon,type,course,risk, responseListener);
             RequestQueue queue = Volley.newRequestQueue(myView.getContext());
@@ -746,10 +897,6 @@ public class newCoupon extends Fragment {
 
     private void getWallet()
     {
-        progressDialog = new ProgressDialog(myView.getContext());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data from the Server.");
-        progressDialog.show();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -763,7 +910,8 @@ public class newCoupon extends Fragment {
                     if (success) {
 
                         valueS = jsonResponse.getDouble("wallet");
-
+                        betsInCoupon.setEnabled(true);
+                        matchesCustomAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
                         Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
 
@@ -796,20 +944,8 @@ public class newCoupon extends Fragment {
                     if (success) {
 
 
+                        updateCourse(updateCouponArgs);
 
-                        Bundle args = new Bundle();
-                        args.putString("nameUser", nameU);
-                        args.putInt("id_user", id_user);
-
-                        newCoupon wU = new newCoupon();
-                        wU.setArguments(args);
-
-                        FragmentManager manager = getFragmentManager();
-                        manager.beginTransaction()
-                                .replace(R.id.content_home_user,
-                                        wU,
-                                        wU.getTag()
-                                ).commit();
 
                     } else {
 
@@ -825,5 +961,6 @@ public class newCoupon extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(uW);
 }
+
 
 }

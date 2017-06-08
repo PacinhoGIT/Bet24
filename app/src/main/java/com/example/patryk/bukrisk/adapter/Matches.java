@@ -6,11 +6,14 @@ package com.example.patryk.bukrisk.adapter;
 
 public class Matches {
 
+    String id;
     String match;
     String A;
     String X;
     String B;
     String date;
+
+
 
     public String getMatch() {
         return match;
@@ -32,8 +35,13 @@ public class Matches {
         return date;
     }
 
-    public Matches(String match, String a, String x, String b, String date) {
+    public String getId() {
+        return id;
+    }
 
+    public Matches(String id,String match, String a, String x, String b, String date) {
+
+        this.id=id;
         this.match = match;
         this.date=date;
         this.A = a;
