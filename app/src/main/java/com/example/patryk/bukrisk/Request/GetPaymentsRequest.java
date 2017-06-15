@@ -12,17 +12,17 @@ import java.util.Map;
  */
 
 public class GetPaymentsRequest extends StringRequest {
-    private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/PaymentsList.php";
-    private Map<String, String> params;
+        private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/PaymentsList.php";
+        private Map<String, String> params;
 
-    public GetPaymentsRequest(String accept, Response.Listener<String> listener) {
-        super(Request.Method.POST, LOGIN_REQUEST_URL, listener, null);
-        params = new HashMap<>();
-        params.put("accept", accept);
-    }
+        public GetPaymentsRequest(String accept, Response.Listener<String> listener) {
+            super(Request.Method.POST, LOGIN_REQUEST_URL, listener, null);
+            params = new HashMap<>();
+            params.put("accept", accept);
+        }
 
-    @Override
-    public Map<String, String> getParams() {
-        return params;
-    }
+        @Override
+        public Map<String, String> getParams() {
+            return params;
+        }
 }

@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,15 +15,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
-import com.example.patryk.bukrisk.Request.GetMatchesRequest;
-import com.example.patryk.bukrisk.Request.GetPaymentsRequest;
+import com.example.patryk.bukrisk.Request.GetFinishedMatchesRequest;
+import com.example.patryk.bukrisk.Request.GetScoresRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
-import com.example.patryk.bukrisk.adapter.AcceptPaymentsCustomAdapter;
 import com.example.patryk.bukrisk.adapter.Matches;
-import com.example.patryk.bukrisk.adapter.Payments;
-import com.example.patryk.bukrisk.adapter.ShowMatchesCustomAdapter;
-import com.example.patryk.bukrisk.adapter.TeamSpinnerAdapter;
-import com.example.patryk.bukrisk.adapter.Teams;
+import com.example.patryk.bukrisk.adapter.NewCouponMatchesCustomAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,45 +29,46 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by patryk on 2017-05-03.
+ * Created by patryk on 2017-06-15.
  */
 
-public class showMatches extends Fragment {
+public class ShowScore extends Fragment {
 
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+    private ListView matchesLV;
+    private ArrayList<Matches> matches;
+    private NewCouponMatchesCustomAdapter matchesCustomAdapter;
 
-    HashMap<Integer, String> teams;
+    HashMap<Integer, String> teamHash;
+    HashMap<String, Integer> matchHash;
 
+    TextView tv1;
 
     Matches match;
-
-    ArrayList<Matches> matches;
-
-    ShowMatchesCustomAdapter matchesCustomAdapter;
-
-    Boolean getDataSucces = false;
-
-    TextView showMatches;
-    ListView matchesListView;
 
     View myView;
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        myView = inflater.inflate(R.layout.show_matches_layout, container, false);
+        myView = inflater.inflate(R.layout.set_matches_score_layout, container, false);
 
-        showMatches = (TextView) myView.findViewById(R.id.showAllMatchesTV);
-        matchesListView = (ListView) myView.findViewById(R.id.macthesListView);
+        tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
+        tv1.setText("Scores");
+
+        matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
 
         matches = new ArrayList<>();
-        teams = new HashMap<>();
-        matchesCustomAdapter = new ShowMatchesCustomAdapter(myView.getContext(),matches);
 
-        matchesListView.setAdapter(matchesCustomAdapter);
 
-        match = new Matches("","Mecz / Data","", "Home","Draw","Away","");
-        matches.add(match);
-        match = new Matches("","","", "","","","");
+
+
+        matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(), matches);
+        matchesLV.setAdapter(matchesCustomAdapter);
+
+        teamHash = new HashMap<>();
+        matchHash = new HashMap<>();
+
+        match = new Matches("","Mecz / Data","", "","","","Score");
         matches.add(match);
         matchesCustomAdapter.notifyDataSetChanged();
 
@@ -80,8 +77,8 @@ public class showMatches extends Fragment {
         return myView;
     }
 
-    private void getTeam()
-    {
+    private void getTeam() {
+
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching data from the Server.");
@@ -110,15 +107,13 @@ public class showMatches extends Fragment {
                             int id_team = jsonValues.get(i).getInt("id_team");
                             String name = jsonValues.get(i).getString("name");
 
-                            teams.put(id_team,name);
+                            teamHash.put(id_team, name);
 
                         }
 
-                        progressDialog.dismiss();
 
                         //Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
 
-                        getDataSucces =  true;
 
                         getMatches();
 
@@ -126,13 +121,13 @@ public class showMatches extends Fragment {
                     } else {
 
                         progressDialog.dismiss();
-                        getDataSucces =  false;
+
 
                     }
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -143,8 +138,7 @@ public class showMatches extends Fragment {
         queue.add(gTR);
     }
 
-    private void getMatches()
-    {
+    private void getMatches() {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -166,29 +160,32 @@ public class showMatches extends Fragment {
 
                             jsonValues.add(jsonArray.getJSONObject(i));
 
-                            int id = jsonValues.get(i).getInt("id_match");
+                            int idMatch = jsonValues.get(i).getInt("id_match");
                             int id_home = jsonValues.get(i).getInt("id_home");
                             int id_away = jsonValues.get(i).getInt("id_away");
+                            String score = jsonValues.get(i).getString("score");
                             String data = jsonValues.get(i).getString("date");
                             double teamA = jsonValues.get(i).getDouble("teamA");
                             double draw = jsonValues.get(i).getDouble("draw");
                             double teamB = jsonValues.get(i).getDouble("teamB");
 
-                            String teamAName = teams.get(id_home);
-                            String teamBName = teams.get(id_away);
+                            String teamAName = teamHash.get(id_home);
+                            String teamBName = teamHash.get(id_away);
 
                             String matchName = teamAName + " - " + teamBName;
+                            matchHash.put(matchName, idMatch);
 
-                            match = new Matches(""+id,matchName+"\n "+data,"",""+teamA,""+draw,""+teamB,"");
-
+                            match = new Matches("" + idMatch, matchName+"\n "+data,data, "" + teamA, "" + draw, "" + teamB, score);
                             matches.add(match);
-                            matchesCustomAdapter.notifyDataSetChanged();
+
 
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
 
+                        matchesCustomAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
-                        Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
+
+
 
 
                     } else {
@@ -199,16 +196,15 @@ public class showMatches extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
         };
 
-        GetMatchesRequest matchesRequest = new GetMatchesRequest(responseListener);
+        GetScoresRequest matchesRequest = new GetScoresRequest(responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(matchesRequest);
 
     }
-
 }

@@ -84,6 +84,7 @@ public class homeAdmin extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.showMatches) {
 
             showMatches sAM = new showMatches();
@@ -137,6 +138,19 @@ public class homeAdmin extends AppCompatActivity
         } else if (id == R.id.exitAdmin) {
 
             confirmExit();
+
+        }else if (id == R.id.setScore) {
+
+
+            SetMatchesScore aT = new SetMatchesScore();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_admin,
+                            aT,
+                            aT.getTag()
+                    ).commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

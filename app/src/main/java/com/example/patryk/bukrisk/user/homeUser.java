@@ -121,7 +121,16 @@ public class homeUser extends AppCompatActivity
                     ).commit();
 
 
-        } else if (id == R.id.myCoupon) {
+        } else if (id == R.id.matchesScore) {
+
+            ShowScore wU = new ShowScore();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            wU,
+                            wU.getTag()
+                    ).commit();
 
         } else if (id == R.id.myBet) {
 

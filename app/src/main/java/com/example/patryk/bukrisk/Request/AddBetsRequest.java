@@ -14,7 +14,7 @@ public class AddBetsRequest extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/AddBets.php";
     private Map<String, String> params;
 
-    public AddBetsRequest(String id_match, String id_coupon, String type, String course, String risk, Response.Listener<String> listener) {
+    public AddBetsRequest(String id_match, String id_coupon, String type, String course, String risk,String key_bet, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("id_match", id_match);
@@ -22,6 +22,7 @@ public class AddBetsRequest extends StringRequest {
         params.put("type", type);
         params.put("course", course);
         params.put("risk", risk);
+        params.put("key_bet", key_bet);
 
     }
 

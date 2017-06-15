@@ -8,6 +8,10 @@
                 android:icon="@drawable/showmatch"
                 android:title="Show Matches" />
             <item
+                android:id="@+id/setScore"
+                android:icon="@drawable/score2"
+                android:title="Set Matches Score" />
+            <item
                 android:id="@+id/addNewMatch"
                 android:icon="@drawable/addmatch"
                 android:title="Add Match" />

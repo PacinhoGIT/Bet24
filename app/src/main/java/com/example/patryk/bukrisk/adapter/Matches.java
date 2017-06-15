@@ -8,6 +8,7 @@ public class Matches {
 
     String id;
     String match;
+    String score;
     String A;
     String X;
     String B;
@@ -39,10 +40,11 @@ public class Matches {
         return id;
     }
 
-    public Matches(String id,String match, String a, String x, String b, String date) {
+    public Matches(String id,String match,String score, String a, String x, String b, String date) {
 
         this.id=id;
         this.match = match;
+        this.score=score;
         this.date=date;
         this.A = a;
         this.X = x;

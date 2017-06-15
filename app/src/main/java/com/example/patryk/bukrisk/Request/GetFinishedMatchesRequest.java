@@ -1,5 +1,9 @@
 package com.example.patryk.bukrisk.Request;
 
+/**
+ * Created by patryk on 2017-06-12.
+ */
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -11,15 +15,15 @@ import java.util.Map;
  * Created by patryk on 2017-05-03.
  */
 
-public class GetMatchesRequest extends StringRequest {
+public class GetFinishedMatchesRequest extends StringRequest {
 
-    private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/GetMatches.php";
+    private static final String LOGIN_REQUEST_URL2 = "https://pacinho.000webhostapp.com/GetFinishedMatches.php";
     private Map<String, String> params;
 
-    public GetMatchesRequest( Response.Listener<String> listener) {
+    public GetFinishedMatchesRequest( Response.Listener<String> listener) {
 
 
-        super(Request.Method.POST, LOGIN_REQUEST_URL, listener, null);
+        super(Request.Method.POST, LOGIN_REQUEST_URL2, listener, null);
 
         params = new HashMap<>();
         //params.put("accept", accept);

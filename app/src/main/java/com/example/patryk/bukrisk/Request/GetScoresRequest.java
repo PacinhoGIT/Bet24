@@ -8,21 +8,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by patryk on 2017-05-03.
+ * Created by patryk on 2017-06-15.
  */
 
-public class GetMatchesRequest extends StringRequest {
+public class GetScoresRequest extends StringRequest {
 
-    private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/GetMatches.php";
+    private static final String LOGIN_REQUEST_URL2 = "https://pacinho.000webhostapp.com/GetScores.php";
     private Map<String, String> params;
 
-    public GetMatchesRequest( Response.Listener<String> listener) {
+    public GetScoresRequest( Response.Listener<String> listener) {
 
-
-        super(Request.Method.POST, LOGIN_REQUEST_URL, listener, null);
-
+        super(Request.Method.POST, LOGIN_REQUEST_URL2, listener, null);
         params = new HashMap<>();
-        //params.put("accept", accept);
     }
 
     @Override
