@@ -134,6 +134,21 @@ public class homeUser extends AppCompatActivity
 
         } else if (id == R.id.myBet) {
 
+            Bundle args = new Bundle();
+            args.putInt("id_user", id_user);
+
+
+            MyBet wU = new MyBet();
+            wU.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            wU,
+                            wU.getTag()
+                    ).commit();
+
+
         }  else if (id == R.id.myWallet) {
 
             Bundle args = new Bundle();

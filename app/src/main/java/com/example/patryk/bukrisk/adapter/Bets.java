@@ -22,6 +22,10 @@ public class Bets {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getId_match() {
         return id_match;
     }
