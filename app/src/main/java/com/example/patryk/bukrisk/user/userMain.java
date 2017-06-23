@@ -13,11 +13,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
-import com.example.patryk.bukrisk.Request.GetCouponsToCheck;
-import com.example.patryk.bukrisk.Request.GetMatchesRequest;
-import com.example.patryk.bukrisk.Request.GetWalletRequest;
+import com.example.patryk.bukrisk.Request.GetCouponsToCheckRequest;
 import com.example.patryk.bukrisk.adapter.Coupons;
-import com.example.patryk.bukrisk.adapter.Matches;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,7 +108,7 @@ public class userMain extends Fragment
             }
         };
 
-        GetCouponsToCheck couponsRequest = new GetCouponsToCheck(""+id_user,responseListener);
+        GetCouponsToCheckRequest couponsRequest = new GetCouponsToCheckRequest(""+id_user,responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(couponsRequest);
     }

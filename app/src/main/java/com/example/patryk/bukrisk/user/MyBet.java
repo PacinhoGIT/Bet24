@@ -126,7 +126,7 @@ public class MyBet extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(),"Team " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -189,7 +189,7 @@ public class MyBet extends Fragment {
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(),"Match " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -249,7 +249,7 @@ public class MyBet extends Fragment {
                     }
 
                 } catch (JSONException e) {
-                    Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(myView.getContext(), "Bets " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         };

@@ -14,7 +14,7 @@ public class AddMatchRequest extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/addMatch.php";
     private Map<String, String> params;
 
-    public AddMatchRequest(String id_home, String id_away, String date, String score, String home, String draw, String away, String result, Response.Listener<String> listener) {
+    public AddMatchRequest(String id_home, String id_away, String date, String score, String home, String draw, String away, String result, String key_match,Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("id_home", id_home);
@@ -25,6 +25,7 @@ public class AddMatchRequest extends StringRequest {
         params.put("draw", draw);
         params.put("teamB", away);
         params.put("result", result);
+        params.put("key_match", key_match);
 
     }
 

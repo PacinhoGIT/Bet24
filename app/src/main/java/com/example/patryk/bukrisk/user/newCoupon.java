@@ -291,7 +291,13 @@ public class newCoupon extends Fragment {
         if (bets.size() > 0) {
             for (int i = 1; i < bets.size(); i++) {
                 Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",", "."));
-                totalCourseValue += cValue;
+
+                if(totalCourseValue==0.0) {
+                    totalCourseValue=cValue;
+                }
+                else {
+                    totalCourseValue = totalCourseValue*cValue;
+                }
 
                 Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",", "."));
                 totalRiskValue += rValue;
@@ -339,7 +345,14 @@ public class newCoupon extends Fragment {
 
 
                                             Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",", "."));
-                                            totalCourseValue += cValue;
+                                            if(totalCourseValue==0.0)
+                                            {
+
+                                                totalCourseValue=cValue;
+
+                                            }else {
+                                                totalCourseValue = totalCourseValue * cValue;
+                                            }
 
                                             Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",", "."));
                                             totalRiskValue += rValue;

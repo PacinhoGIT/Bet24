@@ -149,7 +149,24 @@ public class homeUser extends AppCompatActivity
                     ).commit();
 
 
-        }  else if (id == R.id.myWallet) {
+        }  else if (id == R.id.myCoupon) {
+
+            Bundle args = new Bundle();
+            args.putInt("id_user", id_user);
+
+
+            MyCoupon wU = new MyCoupon();
+            wU.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            wU,
+                            wU.getTag()
+                    ).commit();
+
+
+        } else if (id == R.id.myWallet) {
 
             Bundle args = new Bundle();
             args.putString("nameUser", name);

@@ -403,20 +403,20 @@ public class addMatch extends Fragment {
                 curseB = curseA+ThreadLocalRandom.current().nextDouble(0.5, 1);
             }
 
-            curseX = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
+            curseX = ThreadLocalRandom.current().nextDouble(1.1, 2);
         }
 
         if(sub>3 && sub<=6)
         {
             if(a>b)
             {
-                curseA = ThreadLocalRandom.current().nextDouble(2, 3);
+                curseA = ThreadLocalRandom.current().nextDouble(1.1, 2);
                 curseB = ThreadLocalRandom.current().nextDouble(6,7);
 
             }
             else if(a<b)
             {
-                curseB = ThreadLocalRandom.current().nextDouble(2, 3);
+                curseB = ThreadLocalRandom.current().nextDouble(1.1, 2);
                 curseA = ThreadLocalRandom.current().nextDouble(6,7);
             }
 
@@ -427,13 +427,13 @@ public class addMatch extends Fragment {
         {
             if(a>b)
             {
-                curseA = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
+                curseA = ThreadLocalRandom.current().nextDouble(1.1, 2);
                 curseB = ThreadLocalRandom.current().nextDouble(8.5, 10);
 
             }
             else if(a<b)
             {
-                curseB = ThreadLocalRandom.current().nextDouble(1.1, 2.5);
+                curseB = ThreadLocalRandom.current().nextDouble(1.1, 2);
                 curseA = ThreadLocalRandom.current().nextDouble(8.5, 10);
             }
 
@@ -495,7 +495,9 @@ public class addMatch extends Fragment {
         String DS = curseDrawTV.getText().toString().replace(",",".");
         String BS = curseBTV.getText().toString().replace(",",".");
 
-        AddMatchRequest addteam1 = new AddMatchRequest(""+idA,""+idB,dateTV.getText().toString(),"-",""+AS,""+DS,""+BS,"-", responseListener);
+        String key_match = "H"+idA+"A"+idB+"D"+dateTV.getText();
+
+        AddMatchRequest addteam1 = new AddMatchRequest(""+idA,""+idB,dateTV.getText().toString(),"-",""+AS,""+DS,""+BS,"-",key_match, responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(addteam1);
     }
