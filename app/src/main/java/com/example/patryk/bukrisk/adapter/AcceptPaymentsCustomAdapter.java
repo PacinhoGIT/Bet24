@@ -37,6 +37,9 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
     int id_pay=0;
     int position1;
 
+    String payS;
+    String id_uS;
+
 
     ProgressDialog progressDialog;
 
@@ -45,59 +48,85 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
 
         Payments uPay = getItem(position);
 
-        pay = uPay.value;
-        id_u = uPay.id_user;
+        if(position>0) {
+            pay = Integer.parseInt(uPay.value);
+            id_u = Integer.parseInt(uPay.id_user);
+        }
+        else{
+            payS=uPay.value;
+            id_uS=uPay.id_user;
+        }
 
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_adapter_accept_payments_layout, parent, false);
         }
 
-        TextView tvIdpay = (TextView) convertView.findViewById(R.id.tvID_pay);
-        TextView tvId = (TextView) convertView.findViewById(R.id.tvID_user);
+        TextView nameTV = (TextView) convertView.findViewById(R.id.tvID_pay);
         TextView tvValue = (TextView) convertView.findViewById(R.id.tvValue);
         Button accept = (Button) convertView.findViewById(R.id.customAdapterAcceptBTN);
+        Button decline = (Button) convertView.findViewById(R.id.declinePaymentsButton);
+
+        if(position==0)
+        {
+            accept.setVisibility(View.INVISIBLE);
+            decline.setVisibility(View.INVISIBLE);
+        }
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                value=0.0;
-                id_u=0;
-                id_pay=0;
+                if(position>0) {
+                    value = 0.0;
+                    id_u = 0;
+                    id_pay = 0;
 
-                Payments uPay = getItem(position);
-                position1 = position;
+                    Payments uPay = getItem(position);
+                    position1 = position;
 
-                pay = uPay.value;
-                id_u = uPay.id_user;
-                id_pay = uPay.id_pay;
+                    pay = Integer.parseInt(uPay.value);
+                    id_u = Integer.parseInt(uPay.id_user);
+                    id_pay = Integer.parseInt(uPay.id_pay);
 
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Please Wait !");
+                    progressDialog.show();
 
-
-                //Toast.makeText(getContext(),""+pay,Toast.LENGTH_SHORT).show();
-
-
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Please Wait !");
-                progressDialog.show();
-
-                getWallet(id_u);
-
-                //Toast.makeText(getContext(),""+value,Toast.LENGTH_SHORT).show();
-
-                //Toast.makeText(getContext(),""+value,Toast.LENGTH_SHORT).show();
-
-
-
-
+                    getWallet(id_u);
+                }
             }
         });
 
-        tvIdpay.setText(""+uPay.id_pay);
-        tvId.setText(""+uPay.id_user);
+
+        nameTV.setText(""+uPay.name);
         tvValue.setText(""+uPay.value);
+
+        decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(position>0) {
+                    id_pay = 0;
+
+                    Payments uPay = getItem(position);
+                    position1 = position;
+
+                    pay = Integer.parseInt(uPay.value);
+                    id_u = Integer.parseInt(uPay.id_user);
+                    id_pay = Integer.parseInt(uPay.id_pay);
+
+
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Please Wait !");
+                    progressDialog.show();
+
+                    updatePayments(id_pay);
+                }
+            }
+        });
 
 
         return convertView;

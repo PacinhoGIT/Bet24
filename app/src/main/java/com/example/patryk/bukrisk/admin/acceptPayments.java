@@ -30,10 +30,7 @@ import java.util.ArrayList;
 
 public class acceptPayments extends Fragment {
 
-
-
     View myView;
-    TextView showPay;
 
     Payments payments;
 
@@ -48,12 +45,16 @@ public class acceptPayments extends Fragment {
 
         TextView acceptPayText = (TextView) myView.findViewById(R.id.acceptPayText);
         ListView paymentss = (ListView) myView.findViewById(R.id.payLV);
-        showPay = (TextView) myView.findViewById(R.id.showPay);
 
         paymenstsList = new ArrayList<Payments>();
         paymentsCustomAdapter = new AcceptPaymentsCustomAdapter(myView.getContext(),paymenstsList);
 
         paymentss.setAdapter(paymentsCustomAdapter);
+
+        payments = new Payments("","","Name","Value","");
+        paymenstsList.add(payments);
+
+        paymentsCustomAdapter.notifyDataSetChanged();
 
         getPayments();
 
@@ -90,10 +91,11 @@ public class acceptPayments extends Fragment {
 
                             int id_pay = jsonValues.get(i).getInt("id_pay");
                             int id_user = jsonValues.get(i).getInt("id_user");
+                            String name = jsonValues.get(i).getString("name");
                             int value = jsonValues.get(i).getInt("value");
                             int accept = jsonValues.get(i).getInt("accept");
 
-                            payments = new Payments(id_pay,id_user,value,accept);
+                            payments = new Payments(""+id_pay,""+id_user,name,""+value,""+accept);
                             paymenstsList.add(payments);
 
                             paymentsCustomAdapter.notifyDataSetChanged();

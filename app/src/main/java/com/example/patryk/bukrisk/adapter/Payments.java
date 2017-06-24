@@ -6,32 +6,34 @@ package com.example.patryk.bukrisk.adapter;
 
 public class Payments {
 
-    int id_pay, id_user, value, accept;
+    String id_pay, id_user, value, accept;
+    String name;
 
 
 
-    public Payments(int id_pay, int id_user, int value, int accept) {
+    public Payments(String id_pay, String id_user,String name, String value, String accept) {
 
         this.id_pay = id_pay;
         this.id_user = id_user;
+        this.name = name;
         this.value = value;
         this.accept = accept;
 
     }
 
-    public int getId_pay() {
+    public String getId_user() {return id_user;}
+
+    public String getId_pay() {
         return id_pay;
     }
 
-    public int getId_user() {
-        return id_user;
-    }
+    public String getName() {return name;}
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public int getAccept() {
+    public String getAccept() {
         return accept;
     }
 }

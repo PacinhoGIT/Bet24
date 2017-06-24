@@ -16,16 +16,6 @@
 
     <TextView
         android:text=""
-        android:layout_width="69dp"
-        android:layout_height="29dp"
-        android:id="@+id/tvID_user"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="31dp"
         android:id="@+id/tvValue"
@@ -40,5 +30,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/customAdapterAcceptBTN" />
+
+    <Button
+        android:text="@string/decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/declinePaymentsButton" />
 
 </LinearLayout>

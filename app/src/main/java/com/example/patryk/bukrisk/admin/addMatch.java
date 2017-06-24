@@ -65,6 +65,8 @@ public class addMatch extends Fragment {
     private int month;
     private int day;
 
+    String today;
+
     String month1;
     String day1;
     String teamA,teamB;
@@ -130,6 +132,8 @@ public class addMatch extends Fragment {
                 .append(month1)
                 .append("-")
                 .append(day1));
+
+        today = year+"-"+month1+"-"+day1;
 
         dateBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -464,7 +468,17 @@ public class addMatch extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
 
+                        curseATV.setText("");
+                        curseDrawTV.setText("");
+                        curseBTV.setText("");
+
+                        dateTV.setText(today);
+
+                        teamASpin.setSelection(0);
+                        teamBSpin.setSelection(0);
+
                         progressDialog.dismiss();
+
 
                         new AlertDialog.Builder(myView.getContext())
                                 .setTitle(R.string.addMatch)
