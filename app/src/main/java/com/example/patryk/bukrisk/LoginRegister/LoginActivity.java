@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         finish();
                                     }
-                                },2000);
+                                },1000);
 
                     }
                 })
@@ -165,9 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!valid())
         {
-            new android.os.Handler().postDelayed(
-                    new Runnable() {
-                        public void run() {
+
 
 
                             progressDialog.dismiss();
@@ -186,9 +184,6 @@ public class LoginActivity extends AppCompatActivity {
                             return;
 
 
-                        }
-                    }, 2000);
-
         }
         else
        {
@@ -198,14 +193,10 @@ public class LoginActivity extends AppCompatActivity {
            else
            {
 
-               new android.os.Handler().postDelayed(
-                       new Runnable() {
-                           public void run() {
 
                                progressDialog.dismiss();
                                Toast.makeText(getBaseContext(), "Error ! No internet connection !", Toast.LENGTH_LONG).show();
-                           }
-                       }, 500);
+
 
 
            }
@@ -315,9 +306,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
 
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
 
                                         startActivity(intent);
                                         // On complete call either onLoginSuccess or onLoginFailed
@@ -325,8 +313,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         // onLoginFailed();
                                         progressDialog.dismiss();
-                                    }
-                                }, 2000);
+
                     } else {
                       loginFailed();
                     }

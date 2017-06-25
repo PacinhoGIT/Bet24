@@ -7,17 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by patryk on 2017-06-15.
+ * Created by patryk on 2017-06-25.
  */
 
-public class GetCouponsToCheckRequest extends StringRequest {
-    private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/GetCouponsToCheck.php";
+public class GetBetsInCouponRequest extends StringRequest {
+    private static final String LOGIN_REQUEST_URL = "https://pacinho.000webhostapp.com/GetBetsInCoupon.php";
     private Map<String, String> params;
 
-    public GetCouponsToCheckRequest(String id_user, Response.Listener<String> listener) {
+    public GetBetsInCouponRequest(String id_coupon, Response.Listener<String> listener) {
         super(Method.POST, LOGIN_REQUEST_URL, listener, null);
         params = new HashMap<>();
-        params.put("id_user", id_user);
+        params.put("id_coupon", id_coupon);
     }
 
     @Override
