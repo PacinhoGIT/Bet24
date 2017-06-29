@@ -1,23 +1,32 @@
 package com.example.patryk.bukrisk.user;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
 import com.example.patryk.bukrisk.Request.GetAllMatchesRequest;
 import com.example.patryk.bukrisk.Request.GetBetsInCouponRequest;
 import com.example.patryk.bukrisk.Request.GetCouponsToCheckRequest;
 import com.example.patryk.bukrisk.Request.GetScoresRequest;
+import com.example.patryk.bukrisk.Request.GetWalletRequest;
+import com.example.patryk.bukrisk.Request.UpdateMatchesRequest;
+import com.example.patryk.bukrisk.Request.UpdateSettledCouponsRequest;
+import com.example.patryk.bukrisk.Request.updateWalletRequest;
 import com.example.patryk.bukrisk.adapter.Bets;
 import com.example.patryk.bukrisk.adapter.Coupons;
 import com.example.patryk.bukrisk.adapter.Matches;
@@ -47,6 +56,9 @@ public class userMain extends Fragment
 
     private int id;
 
+    private ArrayList<String> failedCoupon;
+    private ArrayList<String> couponWithNotFinishedMatches;
+
 
 
 
@@ -65,6 +77,8 @@ public class userMain extends Fragment
             coupons = new ArrayList<>();
             betsAL = new ArrayList<>();
             goodCoupon = new ArrayList<>();
+            failedCoupon = new ArrayList<>();
+            couponWithNotFinishedMatches = new ArrayList<>();
 
             matchResult = new HashMap<>();
             bets = new HashMap<>();
@@ -127,7 +141,8 @@ public class userMain extends Fragment
 
                     } else {
 
-
+                        progressDialog.dismiss();
+                        Toast.makeText(myView.getContext(),"No coupons to check !",Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -182,7 +197,7 @@ public class userMain extends Fragment
 
                     } else {
 
-
+                    progressDialog.dismiss();
 
                     }
 
@@ -202,8 +217,7 @@ public class userMain extends Fragment
 
     private void getBetsInCoupon(final String id_coupon, final boolean end){
 
-
-
+        betsAL.clear();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -217,8 +231,6 @@ public class userMain extends Fragment
 
                     if (success) {
 
-                        betsAL.clear();
-
                         JSONArray jsonArray = jsonResponse.getJSONArray("bets");
 
                         ArrayList<JSONObject> jsonValues = new ArrayList<>();
@@ -229,6 +241,7 @@ public class userMain extends Fragment
 
                             int id_match = jsonValues.get(i).getInt("id_match");
                             String type = jsonValues.get(i).getString("type");
+
 
                             Bets b = new Bets(""+id_match,"","",type,"","");
                             betsAL.add(b);
@@ -246,9 +259,15 @@ public class userMain extends Fragment
 
                             String result = matchResult.get(id_match);
 
-                            if(result.equals(type))
+                           if(result.equals(type))
                             {
                                 goodBet++;
+                            }
+                            else if(!result.equals(type) && !result.equals("-")){
+
+                                if(!failedCoupon.contains(id_coupon)){
+                                    failedCoupon.add(id_coupon);
+                                }
                             }
                         }
 
@@ -259,23 +278,12 @@ public class userMain extends Fragment
 
                         if(end==true)
                         {
-
-                            if(goodCoupon.size()>0) {
-
-                                String text = "Good coupon : ";
-                                for(int i=0;i<goodCoupon.size();i++)
-                                {
-                                    text+=""+goodCoupon.get(i)+" ";
-                                }
+                            if(goodCoupon.size()>0 || failedCoupon.size()>0) {
+                                showSummaryAlertDialog();
                                 progressDialog.dismiss();
-                                Toast.makeText(myView.getContext(),text, Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(myView.getContext(),"No coupons to settled !",Toast.LENGTH_SHORT).show();
                             }
-                            else
-                            {
-                                progressDialog.dismiss();
-                                Toast.makeText(myView.getContext(),"No Win !", Toast.LENGTH_SHORT).show();
-                            }
-
                         }
 
                     } else {
@@ -301,9 +309,6 @@ public class userMain extends Fragment
 
         for(int i=0;i<coupons.size();i++)
         {
-
-            //Toast.makeText(myView.getContext(),"Check "+(i+1)+"/"+coupons.size(),Toast.LENGTH_SHORT).show();
-
             boolean end;
 
            Coupons c = coupons.get(i);
@@ -320,5 +325,252 @@ public class userMain extends Fragment
             getBetsInCoupon(id_coupon,end);
 
         }
+    }
+
+    private void showSummaryAlertDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
+        builder.setTitle(R.string.checkCoupon);
+        final View viewInflated = LayoutInflater.from(myView.getContext()).inflate(R.layout.summary_check_coupon_alert_dialog, (ViewGroup) getView(), false);
+
+        TextView countWinTV = (TextView) viewInflated.findViewById(R.id.countWinTV);
+        TextView countLoseTV = (TextView) viewInflated.findViewById(R.id.countLoseTV);
+        TextView moneyLoseTV = (TextView) viewInflated.findViewById(R.id.moneyLoseTV);
+        TextView moneyWinTV = (TextView) viewInflated.findViewById(R.id.moneyWinTV);
+
+
+        double moneyWin=0.0;
+        double moneyLose=0.0;
+
+        final double moneyWin2;
+        final double moneyLose2;
+
+
+        for(int i=0;i<goodCoupon.size();i++)
+        {
+            for(int j=0;j<coupons.size();j++)
+            {
+                if(goodCoupon.get(i).equals(coupons.get(j).getId_coupons())){
+
+                    Double cValue = Double.valueOf(coupons.get(j).getTo_win().replace(",", "."));
+                    moneyWin+=cValue;
+                }
+            }
+
+        }
+
+        moneyWin2=moneyWin;
+
+
+        for(int i=0;i<failedCoupon.size();i++)
+        {
+            for(int j=0;j<coupons.size();j++)
+            {
+                if(failedCoupon.get(i).equals(coupons.get(j).getId_coupons())){
+
+                    Double cValue = Double.valueOf(coupons.get(j).getMoney().replace(",", "."));
+                    moneyLose+=cValue;
+                }
+            }
+
+        }
+
+        moneyLose2=moneyLose;
+
+        countWinTV.setText(""+goodCoupon.size());
+        countLoseTV.setText(""+failedCoupon.size());
+
+        moneyWinTV.setText(""+moneyWin + " PLN");
+        moneyLoseTV.setText(" - "+moneyLose + " PLN");
+
+        builder.setView(viewInflated)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(moneyWin2>0) {
+                            getWallet(moneyWin2, id);
+                        }else if (moneyLose2>0){
+
+                            updateFailedCoupons();
+                        }
+                        dialog.dismiss();
+
+                    }
+                });
+
+
+        android.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void getWallet(final double moneyWin, final int idUser) {
+
+
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Please wait. Update wallet ... ");
+        progressDialog.show();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+
+                    if (success) {
+
+                        Double value = jsonResponse.getDouble("wallet");
+
+                        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
+                      //  Double cValue = Double.valueOf(coupons.get(j).getMoney().replace(",", "."));
+                        value = value + moneyWin;
+                        String valueS= String.valueOf(value);
+
+                         valueS = df.format(value);
+                         valueS = valueS.replace(",", ".");
+
+
+                        saveWallet(valueS, idUser);
+
+                        //Toast.makeText(getContext(),""+value,Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        GetWalletRequest walletRequest = new GetWalletRequest(""+idUser, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+        queue.add(walletRequest);
+
+    }
+
+
+    private void saveWallet(String value, int idUser) {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+
+                        updateCoupons();
+
+                    } else {
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        updateWalletRequest uW = new updateWalletRequest("" + value, "" + idUser, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+        queue.add(uW);
+    }
+
+    private void updateCoupons(){
+
+        for(int i=0;i<goodCoupon.size();i++){
+
+            final int i1 = i;
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        if (success) {
+
+                            if (i1 == goodCoupon.size() - 1) {
+
+                                if(failedCoupon.size()>0)
+                                {
+                                    updateFailedCoupons();
+                                }
+                                else{
+                                    Toast.makeText(myView.getContext(), "Succes !", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+                               //
+                            }
+
+                        } else {
+                        }
+
+                    } catch (JSONException e) {
+
+                        Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+            String id_coupon = goodCoupon.get(i);
+
+            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+            queue.add(UMR);
+        }
+    }
+
+    private void updateFailedCoupons(){
+
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Please wait ... ");
+        progressDialog.show();
+
+        for(int i=0;i<failedCoupon.size();i++){
+
+            final int i1 = i;
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        if (success) {
+
+                            if (i1 == failedCoupon.size() - 1) {
+
+                                    Toast.makeText(myView.getContext(), "Succes !", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+
+
+                        } else {
+                        }
+
+                    } catch (JSONException e) {
+
+                        Toast.makeText(myView.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+            String id_coupon = failedCoupon.get(i);
+
+            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(myView.getContext());
+            queue.add(UMR);
+        }
+
     }
 }
