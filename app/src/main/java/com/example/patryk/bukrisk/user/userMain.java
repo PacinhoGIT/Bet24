@@ -57,7 +57,6 @@ public class userMain extends Fragment
     private int id;
 
     private ArrayList<String> failedCoupon;
-    private ArrayList<String> couponWithNotFinishedMatches;
 
 
 
@@ -78,7 +77,6 @@ public class userMain extends Fragment
             betsAL = new ArrayList<>();
             goodCoupon = new ArrayList<>();
             failedCoupon = new ArrayList<>();
-            couponWithNotFinishedMatches = new ArrayList<>();
 
             matchResult = new HashMap<>();
             bets = new HashMap<>();
@@ -90,6 +88,11 @@ public class userMain extends Fragment
         }
 
     private void getCouponsToCheck(int id_user){
+
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Please wait. Check coupons ... ");
+        progressDialog.show();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -161,11 +164,6 @@ public class userMain extends Fragment
 
     private void getMatches() {
 
-        progressDialog = new ProgressDialog(myView.getContext());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Please wait. Check coupons ... ");
-        progressDialog.show();
-
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -192,12 +190,12 @@ public class userMain extends Fragment
                             matchResult.put(idMatch,result);
                         }
 
-                        getCouponsToCheck(id);
+                        if(matchResult.size()>0) {
+                            getCouponsToCheck(id);
+                        }
 
 
                     } else {
-
-                    progressDialog.dismiss();
 
                     }
 
@@ -283,6 +281,7 @@ public class userMain extends Fragment
                                 progressDialog.dismiss();
                             }else{
                                 Toast.makeText(myView.getContext(),"No coupons to settled !",Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
                             }
                         }
 

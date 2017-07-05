@@ -55,7 +55,7 @@ public class walletUser extends Fragment {
         nameU = bundle.getString("nameUser");
         id_user = bundle.getInt("id_user");
 
-        //myWallet.setText(id_user);
+        myWallet.setVisibility(View.INVISIBLE);
         getWallet(nameU);
 
         addFundsBTN.setOnClickListener(new View.OnClickListener() {

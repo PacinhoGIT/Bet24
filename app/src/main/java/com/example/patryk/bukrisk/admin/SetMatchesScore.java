@@ -2,6 +2,7 @@ package com.example.patryk.bukrisk.admin;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.example.patryk.bukrisk.adapter.Matches;
 import com.example.patryk.bukrisk.adapter.NewCouponMatchesCustomAdapter;
 import com.example.patryk.bukrisk.adapter.Payments;
 import com.example.patryk.bukrisk.adapter.ShowBetsInCouponCustomAdapter;
+import com.example.patryk.bukrisk.user.userMain;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +67,7 @@ public class SetMatchesScore extends Fragment {
 
         myView = inflater.inflate(R.layout.set_matches_score_layout, container, false);
 
-        tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
+       // tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
         matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
 
         matches = new ArrayList<>();
@@ -206,13 +208,38 @@ public class SetMatchesScore extends Fragment {
 
                         matchesCustomAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
+                        Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+
 
 
 
 
                     } else {
 
-                        progressDialog.dismiss();
+                        if (matches.size() == 0) {
+
+                            final AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
+                            alertDialog.setTitle("Set matches score");
+                            alertDialog.setMessage("Not available macthes !");
+
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    alertDialog.dismiss();
+                                }
+                            });
+
+                            alertDialog.show();
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+
+
+                        } else {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 

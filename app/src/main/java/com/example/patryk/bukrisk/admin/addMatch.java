@@ -5,7 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,11 +36,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by patryk on 2017-04-30.
@@ -78,11 +86,14 @@ public class addMatch extends Fragment {
 
     Boolean getDataSucces = false;
 
+
+
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         myView = inflater.inflate(R.layout.add_match_layout, container, false);
 
         addBTN = (Button) myView.findViewById(R.id.addMatchBTN);
+
         addBTN.setEnabled(false);
 
         dateBTN = (ImageButton) myView.findViewById(R.id.dateImgBtn);
@@ -299,9 +310,11 @@ public class addMatch extends Fragment {
 
 
 
+
         return myView;
 
     }
+
 
     private void getTeam()
     {

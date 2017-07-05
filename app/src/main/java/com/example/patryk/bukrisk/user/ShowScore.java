@@ -1,7 +1,10 @@
 package com.example.patryk.bukrisk.user;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,8 +55,8 @@ public class ShowScore extends Fragment {
 
         myView = inflater.inflate(R.layout.set_matches_score_layout, container, false);
 
-        tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
-        tv1.setText("Scores");
+       // tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
+       // tv1.setText("Scores");
 
         matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
 
@@ -183,14 +186,38 @@ public class ShowScore extends Fragment {
                         }
 
                         matchesCustomAdapter.notifyDataSetChanged();
-                        progressDialog.dismiss();
 
 
 
 
                     } else {
 
-                        progressDialog.dismiss();
+                        if (matches.size() == 1) {
+
+                            final AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
+                            alertDialog.setTitle("Show Score");
+                            alertDialog.setMessage("Not available data !");
+
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                    alertDialog.dismiss();
+                                }
+                            });
+
+                            alertDialog.show();
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+
+
+                        } else {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                        }
+
 
                     }
 

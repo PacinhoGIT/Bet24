@@ -1,11 +1,18 @@
 package com.example.patryk.bukrisk.user;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,7 +48,7 @@ public class showMatches extends Fragment {
     ProgressDialog progressDialog;
 
     HashMap<Integer, String> teams;
-
+    HashMap<Integer, String> teamLogo;
 
     Matches match;
 
@@ -60,11 +67,13 @@ public class showMatches extends Fragment {
 
         myView = inflater.inflate(R.layout.show_matches_layout, container, false);
 
-        showMatches = (TextView) myView.findViewById(R.id.showAllMatchesTV);
+       // showMatches = (TextView) myView.findViewById(R.id.showAllMatchesTV);
         matchesListView = (ListView) myView.findViewById(R.id.macthesListView);
 
         matches = new ArrayList<>();
         teams = new HashMap<>();
+        teamLogo = new HashMap<>();
+
         matchesCustomAdapter = new ShowMatchesCustomAdapter(myView.getContext(),matches);
 
         matchesListView.setAdapter(matchesCustomAdapter);
@@ -109,8 +118,13 @@ public class showMatches extends Fragment {
 
                             int id_team = jsonValues.get(i).getInt("id_team");
                             String name = jsonValues.get(i).getString("name");
+                            String logo = jsonValues.get(i).getString("logo");
 
                             teams.put(id_team,name);
+                            teamLogo.put(id_team,logo);
+
+
+
 
                         }
 
@@ -141,6 +155,13 @@ public class showMatches extends Fragment {
         GetTeamRequest gTR = new GetTeamRequest(responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(gTR);
+    }
+
+    private void decodeByte64(String code){
+
+        byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
     }
 
     private void getMatches()
@@ -179,7 +200,7 @@ public class showMatches extends Fragment {
 
                             String matchName = teamAName + " - " + teamBName;
 
-                            match = new Matches(""+id,matchName+"\n "+data,"",""+teamA,""+draw,""+teamB,"");
+                            match = new Matches("" + id, matchName + "\n " + data, "", "" + teamA, "" + draw, "" + teamB, "");
 
                             matches.add(match);
                             matchesCustomAdapter.notifyDataSetChanged();
@@ -187,13 +208,38 @@ public class showMatches extends Fragment {
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
 
-                        progressDialog.dismiss();
-                        Toast.makeText(myView.getContext(),R.string.success, Toast.LENGTH_SHORT).show();
+
+
 
 
                     } else {
 
-                        progressDialog.dismiss();
+                        if (matches.size() == 1) {
+
+                            final AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext()).create();
+                            alertDialog.setTitle("Show matches");
+                            alertDialog.setMessage("Not available macthes !");
+
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                    alertDialog.dismiss();
+                                }
+                            });
+
+                            alertDialog.show();
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+
+
+                        } else {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                        }
+
 
                     }
 
