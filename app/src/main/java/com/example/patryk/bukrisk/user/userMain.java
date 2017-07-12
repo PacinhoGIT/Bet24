@@ -501,6 +501,7 @@ public class userMain extends Fragment
 
                                 if(failedCoupon.size()>0)
                                 {
+                                    progressDialog.dismiss();
                                     updateFailedCoupons();
                                 }
                                 else{

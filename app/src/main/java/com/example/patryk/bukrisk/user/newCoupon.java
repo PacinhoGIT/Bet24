@@ -83,6 +83,7 @@ public class newCoupon extends Fragment {
     String day1;
 
     HashMap<Integer, String> teamHash;
+    HashMap<Integer, String> teamLogoHash;
     HashMap<String, Integer> matchHash;
 
     String[] updateCouponArgs = new String[4];
@@ -151,6 +152,7 @@ public class newCoupon extends Fragment {
         bets.add(b);
 
         teamHash = new HashMap<>();
+        teamLogoHash = new HashMap<>();
         matchHash = new HashMap<>();
 
         final Calendar c = Calendar.getInstance();
@@ -639,8 +641,10 @@ public class newCoupon extends Fragment {
 
                             int id_team = jsonValues.get(i).getInt("id_team");
                             String name = jsonValues.get(i).getString("name");
+                            String logo = jsonValues.get(i).getString("logo");
 
                             teamHash.put(id_team, name);
+                            teamLogoHash.put(id_team, logo);
 
                         }
 
@@ -704,10 +708,13 @@ public class newCoupon extends Fragment {
                             String teamAName = teamHash.get(id_home);
                             String teamBName = teamHash.get(id_away);
 
+                            String logoA = teamLogoHash.get(id_home);
+                            String logoB = teamLogoHash.get(id_away);
+
                             String matchName = teamAName + " - " + teamBName;
                             matchHash.put(matchName, idMatch);
 
-                            match = new Matches("" + idMatch, matchName,"", "" + teamA, "" + draw, "" + teamB, data);
+                            match = new Matches("" + idMatch, matchName,teamAName,logoA,teamBName,logoB,"", "" + teamA, "" + draw, "" + teamB, data);
 
                             matches.add(match);
 
@@ -961,7 +968,7 @@ public class newCoupon extends Fragment {
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
                             teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) + 0.01;
 
-                            Matches m = new Matches(matches.get(i1).getId(),"","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            Matches m = new Matches(matches.get(i1).getId(),"","","","","","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
                             matchCourseData.add(m);
 
                         }
@@ -973,7 +980,7 @@ public class newCoupon extends Fragment {
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
                             teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) - 0.01;
 
-                            Matches m = new Matches(matches.get(i1).getId(),"","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            Matches m = new Matches(matches.get(i1).getId(),"","","","","","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
                             matchCourseData.add(m);
                         }
                     } else if (bets.get(i).getType().equals("X")) {
@@ -984,7 +991,7 @@ public class newCoupon extends Fragment {
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) - 0.01;
                             teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) + 0.01;
 
-                            Matches m = new Matches(matches.get(i1).getId(),"","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
+                            Matches m = new Matches(matches.get(i1).getId(),"","","","","","",""+df.format(teamA),""+df.format(draw),""+df.format(teamB),"");
                             matchCourseData.add(m);
 
                         }

@@ -12,7 +12,11 @@ public class Matches {
     String A;
     String X;
     String B;
+    String teamA;
+    String teamB;
     String date;
+    String logoA;
+    String logoB;
 
 
 
@@ -40,15 +44,19 @@ public class Matches {
         return id;
     }
 
-    public Matches(String id,String match,String score, String a, String x, String b, String date) {
+
+    public Matches(String id, String match, String teamA,String logoA, String teamB,String logoB, String score, String a, String x, String b, String date) {
 
         this.id=id;
         this.match = match;
+        this.teamA = teamA;
+        this.teamB = teamB;
         this.score=score;
         this.date=date;
+        this.logoA=logoA;
+        this.logoB=logoB;
         this.A = a;
         this.X = x;
-
         this.B = b;
     }
 }

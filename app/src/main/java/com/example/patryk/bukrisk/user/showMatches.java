@@ -78,9 +78,9 @@ public class showMatches extends Fragment {
 
         matchesListView.setAdapter(matchesCustomAdapter);
 
-        match = new Matches("","Match / Date","", "Home","Draw","Away","");
+        match = new Matches("","Match / Date","","","","","", "Home","Draw","Away","");
         matches.add(match);
-        match = new Matches("","","", "","","","");
+        match = new Matches("","","","","","","","","","","");
         matches.add(match);
         matchesCustomAdapter.notifyDataSetChanged();
 
@@ -200,7 +200,7 @@ public class showMatches extends Fragment {
 
                             String matchName = teamAName + " - " + teamBName;
 
-                            match = new Matches("" + id, matchName + "\n " + data, "", "" + teamA, "" + draw, "" + teamB, "");
+                            match = new Matches("" + id, matchName + "\n " + data,teamAName,"",teamBName,"", "", "" + teamA, "" + draw, "" + teamB, "");
 
                             matches.add(match);
                             matchesCustomAdapter.notifyDataSetChanged();

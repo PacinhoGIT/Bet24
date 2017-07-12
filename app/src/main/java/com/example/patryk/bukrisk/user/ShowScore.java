@@ -71,7 +71,7 @@ public class ShowScore extends Fragment {
         teamHash = new HashMap<>();
         matchHash = new HashMap<>();
 
-        match = new Matches("","Mecz / Data","", "","","","Score");
+        match = new Matches("","Mecz / Data","","","","","", "","","","Score");
         matches.add(match);
         matchesCustomAdapter.notifyDataSetChanged();
 
@@ -178,7 +178,7 @@ public class ShowScore extends Fragment {
                             String matchName = teamAName + " - " + teamBName;
                             matchHash.put(matchName, idMatch);
 
-                            match = new Matches("" + idMatch, matchName+"\n "+data,data, "" + teamA, "" + draw, "" + teamB, score);
+                            match = new Matches("" + idMatch, matchName+"\n "+data,"","","","",data, "" + teamA, "" + draw, "" + teamB, score);
                             matches.add(match);
 
 
