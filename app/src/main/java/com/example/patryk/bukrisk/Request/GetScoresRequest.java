@@ -16,10 +16,11 @@ public class GetScoresRequest extends StringRequest {
     private static final String LOGIN_REQUEST_URL2 = "https://pacinho.000webhostapp.com/GetScores.php";
     private Map<String, String> params;
 
-    public GetScoresRequest( Response.Listener<String> listener) {
+    public GetScoresRequest(String day, Response.Listener<String> listener) {
 
         super(Request.Method.POST, LOGIN_REQUEST_URL2, listener, null);
         params = new HashMap<>();
+        params.put("day", day);
     }
 
     @Override

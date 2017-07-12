@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.example.patryk.bukrisk.Request.GetScoresRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.adapter.Matches;
 import com.example.patryk.bukrisk.adapter.NewCouponMatchesCustomAdapter;
+import com.example.patryk.bukrisk.adapter.ScoreCustomAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by patryk on 2017-06-15.
@@ -40,12 +44,15 @@ public class ShowScore extends Fragment {
     private ProgressDialog progressDialog;
     private ListView matchesLV;
     private ArrayList<Matches> matches;
-    private NewCouponMatchesCustomAdapter matchesCustomAdapter;
+    private ScoreCustomAdapter matchesCustomAdapter;
 
     HashMap<Integer, String> teamHash;
+    HashMap<Integer, String> teamLogoHash;
     HashMap<String, Integer> matchHash;
 
     TextView tv1;
+
+    String day="7";
 
     Matches match;
 
@@ -59,23 +66,79 @@ public class ShowScore extends Fragment {
        // tv1.setText("Scores");
 
         matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
+        Spinner dayCount = (Spinner) myView.findViewById(R.id.dayCountSpinner);
+
+        List<String> days = new ArrayList<String>();
+        days.add("--Days--");
+        days.add("7 days");
+        days.add("14 days");
+        days.add("31 days");
 
         matches = new ArrayList<>();
 
 
 
 
-        matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(), matches);
+        matchesCustomAdapter = new ScoreCustomAdapter(myView.getContext(), matches);
         matchesLV.setAdapter(matchesCustomAdapter);
 
         teamHash = new HashMap<>();
+        teamLogoHash = new HashMap<>();
         matchHash = new HashMap<>();
 
-        match = new Matches("","Mecz / Data","","","","","", "","","","Score");
+      /*  match = new Matches("","","","","","","", "","","","");
         matches.add(match);
-        matchesCustomAdapter.notifyDataSetChanged();
+        matchesCustomAdapter.notifyDataSetChanged();*/
 
         getTeam();
+
+        matchesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(myView.getContext(), matches.get(position).getMatch(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(myView.getContext(), android.R.layout.simple_spinner_item, days);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dayCount.setAdapter(dataAdapter);
+
+        dayCount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position!=0) {
+
+                    teamHash.clear();
+                    teamLogoHash.clear();
+                    matchHash.clear();
+                    matches.clear();
+
+                    matchesCustomAdapter.notifyDataSetChanged();
+
+                    if (position == 1) {
+                        day = "7";
+                        getTeam();
+                    } else if (position == 2) {
+                        day = "14";
+                        getTeam();
+                    } else if (position == 3) {
+                        day = "31";
+                        getTeam();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                day="7";
+            }
+
+        });
 
         return myView;
     }
@@ -109,8 +172,10 @@ public class ShowScore extends Fragment {
 
                             int id_team = jsonValues.get(i).getInt("id_team");
                             String name = jsonValues.get(i).getString("name");
+                            String logo= jsonValues.get(i).getString("logo");
 
                             teamHash.put(id_team, name);
+                            teamLogoHash.put(id_team, logo);
 
                         }
 
@@ -175,10 +240,13 @@ public class ShowScore extends Fragment {
                             String teamAName = teamHash.get(id_home);
                             String teamBName = teamHash.get(id_away);
 
+                            String logoA = teamLogoHash.get(id_home);
+                            String logoB = teamLogoHash.get(id_away);
+
                             String matchName = teamAName + " - " + teamBName;
                             matchHash.put(matchName, idMatch);
 
-                            match = new Matches("" + idMatch, matchName+"\n "+data,"","","","",data, "" + teamA, "" + draw, "" + teamB, score);
+                            match = new Matches("" + idMatch, matchName+"\n "+data,teamAName,logoA,teamBName,logoB,score, "" + teamA, "" + draw, "" + teamB, data);
                             matches.add(match);
 
 
@@ -186,6 +254,8 @@ public class ShowScore extends Fragment {
                         }
 
                         matchesCustomAdapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                        Toast.makeText(myView.getContext(), R.string.success, Toast.LENGTH_SHORT).show();
 
 
 
@@ -229,7 +299,7 @@ public class ShowScore extends Fragment {
             }
         };
 
-        GetScoresRequest matchesRequest = new GetScoresRequest(responseListener);
+        GetScoresRequest matchesRequest = new GetScoresRequest(day,responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(matchesRequest);
 
