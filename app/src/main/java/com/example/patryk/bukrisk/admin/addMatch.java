@@ -348,8 +348,9 @@ public class addMatch extends Fragment {
                             int team_rating = jsonValues.get(i).getInt("team_rating");
                             int form_rating = jsonValues.get(i).getInt("form_rating");
                             double overall_rating = jsonValues.get(i).getDouble("overall_rating");
+                            String logo = jsonValues.get(i).getString("logo");
 
-                            team = new Teams(id_team,name,team_rating,form_rating,overall_rating);
+                            team = new Teams(id_team,name,team_rating,form_rating,overall_rating,logo);
                             TeamsList.add(team);
 
                             teamsLits.add(name);

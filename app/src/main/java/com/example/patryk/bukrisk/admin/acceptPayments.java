@@ -43,7 +43,7 @@ public class acceptPayments extends Fragment {
 
         myView = inflater.inflate(R.layout.accept_payments_layout, container, false);
 
-        TextView acceptPayText = (TextView) myView.findViewById(R.id.acceptPayText);
+       // TextView acceptPayText = (TextView) myView.findViewById(R.id.acceptPayText);
         ListView paymentss = (ListView) myView.findViewById(R.id.payLV);
 
         paymenstsList = new ArrayList<Payments>();

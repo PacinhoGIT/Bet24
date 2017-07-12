@@ -78,7 +78,7 @@ public class showMatches extends Fragment {
 
         matchesListView.setAdapter(matchesCustomAdapter);
 
-        match = new Matches("","Mecz / Data","", "Home","Draw","Away","");
+        match = new Matches("","Match / Date","", "Home","Draw","Away","");
         matches.add(match);
         match = new Matches("","","", "","","","");
         matches.add(match);

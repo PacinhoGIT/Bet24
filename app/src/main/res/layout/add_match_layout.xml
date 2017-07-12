@@ -4,34 +4,6 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:text="@string/addMatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:id="@+id/addMatchTV"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dateTV"
-        android:layout_alignStart="@+id/teamBSpin"
-        android:layout_toStartOf="@+id/dateImgBtn"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_above="@+id/calculateCurseBTN"
-        android:layout_alignTop="@+id/dateImgBtn" />
-
-    <TextView
         android:text="@string/curseA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,95 +43,17 @@
         android:textSize="20dp"
         android:layout_alignStart="@+id/curseB" />
 
-    <Button
-        android:text="@string/addTeamBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
-        android:id="@+id/addMatchBTN" />
-
-    <TextView
-        android:text="@string/teamA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/teamATV"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_below="@+id/addMatchTV"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="@string/teamB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/teamBTV"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_marginTop="42dp"
-        android:layout_below="@+id/teamASpin"
-        android:layout_toStartOf="@+id/teamBSpin" />
-
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/teamBSpin"
-        android:background="@android:drawable/spinner_background"
-        android:popupBackground="@android:drawable/spinner_dropdown_background"
         android:layout_below="@+id/teamASpin"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="29dp"
-        android:layout_toEndOf="@+id/teamATV" />
-
-    <TextView
-        android:text="@string/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/date"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_alignTop="@+id/dateImgBtn"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/teamBSpin"
-        android:layout_alignBottom="@+id/dateTV" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/date"
-        android:layout_marginTop="15dp"
-        android:id="@+id/dateImgBtn"
-        android:layout_below="@+id/teamBSpin"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:text="@string/calculateCurse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/calculateCurseBTN"
-        android:textAlignment="center"
-        android:layout_below="@+id/dateImgBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/teamASpin"
+        android:layout_toEndOf="@+id/teamATV"
         android:background="@android:drawable/spinner_background"
-        android:popupBackground="@android:drawable/spinner_dropdown_background"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/addMatchTV"
-        android:layout_alignStart="@+id/teamBSpin" />
+        android:popupBackground="@android:drawable/spinner_background" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -197,5 +91,100 @@
         android:layout_alignBaseline="@+id/curseATV"
         android:layout_alignBottom="@+id/curseATV"
         android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/date"
+        android:id="@+id/dateImgBtn"
+        android:layout_alignTop="@+id/dateTV"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateTV"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/date"
+        android:layout_alignBottom="@+id/date"
+        android:layout_alignStart="@+id/teamBSpin"
+        android:layout_alignEnd="@+id/calculateCurseBTN" />
+
+    <TextView
+        android:text="@string/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/teamBSpin"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/teamBSpin" />
+
+    <TextView
+        android:text="@string/teamB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/teamBTV"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/teamBSpin"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/date"
+        android:layout_toStartOf="@+id/calculateCurseBTN" />
+
+    <Button
+        android:text="@string/addTeamBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/addMatchBTN"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/teamASpin"
+        android:background="@android:drawable/spinner_background"
+        android:popupBackground="@android:drawable/spinner_background"
+        android:layout_below="@+id/addMatchTV"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="38dp"
+        android:layout_alignStart="@+id/teamBSpin" />
+
+    <TextView
+        android:text="@string/teamA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/teamATV"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_alignTop="@+id/teamASpin"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/teamBTV" />
+
+    <Button
+        android:text="@string/calculateCurse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calculateCurseBTN"
+        android:textAlignment="center"
+        android:layout_below="@+id/dateImgBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp" />
 
 </RelativeLayout>

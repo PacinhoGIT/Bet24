@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                if((edLogin.getText().toString()).equals("1"))
+                if((edLogin.getText().toString()).equals(""))
                 {
                     Intent intent;
                     intent = new Intent(LoginActivity.this, homeAdmin.class);

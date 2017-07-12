@@ -109,7 +109,7 @@ public class newCoupon extends Fragment {
 
         myView = inflater.inflate(R.layout.new_coupon_layout, container, false);
 
-        newCoupon = (TextView) myView.findViewById(R.id.newCouponTV);
+        //newCoupon = (TextView) myView.findViewById(R.id.newCouponTV);
         moneyTV = (TextView) myView.findViewById(R.id.moneyTV);
         nameOfCoupon = (TextView) myView.findViewById(R.id.nameOfCoupon);
         moneyValue = (EditText) myView.findViewById(R.id.moneyET);
@@ -956,7 +956,7 @@ public class newCoupon extends Fragment {
 
                     if (bets.get(i).getType().equals("A")) {
 
-                        if ((Double.valueOf(matches.get(i1).getA().replace(",", "."))) > 1.5) {
+                        if ((Double.valueOf(matches.get(i1).getA().replace(",", "."))) > 1.15) {
                             teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) - 0.01;
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
                             teamB = (Double.valueOf(matches.get(i1).getB().replace(",", "."))) + 0.01;
@@ -967,7 +967,7 @@ public class newCoupon extends Fragment {
                         }
                     } else if (bets.get(i).getType().equals("B")) {
 
-                        if ((Double.valueOf(matches.get(i1).getB().replace(",", "."))) > 1.5) {
+                        if ((Double.valueOf(matches.get(i1).getB().replace(",", "."))) > 1.15) {
 
                             teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) + 0.01;
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) + 0.01;
@@ -978,7 +978,7 @@ public class newCoupon extends Fragment {
                         }
                     } else if (bets.get(i).getType().equals("X")) {
 
-                        if ((Double.valueOf(matches.get(i1).getX().replace(",", "."))) > 1.5) {
+                        if ((Double.valueOf(matches.get(i1).getX().replace(",", "."))) > 1.15) {
 
                             teamA = (Double.valueOf(matches.get(i1).getA().replace(",", "."))) + 0.01;
                             draw = (Double.valueOf(matches.get(i1).getX().replace(",", "."))) - 0.01;
