@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -29,6 +32,7 @@ import com.example.patryk.bukrisk.adapter.AcceptPaymentsCustomAdapter;
 import com.example.patryk.bukrisk.adapter.Matches;
 import com.example.patryk.bukrisk.adapter.Payments;
 import com.example.patryk.bukrisk.adapter.ShowMatchesCustomAdapter;
+import com.example.patryk.bukrisk.adapter.ShowMatchesCustomListAdapter;
 import com.example.patryk.bukrisk.adapter.TeamSpinnerAdapter;
 import com.example.patryk.bukrisk.adapter.Teams;
 
@@ -54,7 +58,8 @@ public class showMatches extends Fragment {
 
     ArrayList<Matches> matches;
 
-    ShowMatchesCustomAdapter matchesCustomAdapter;
+    //ShowMatchesCustomAdapter matchesCustomAdapter;
+    ShowMatchesCustomListAdapter matcheListsCustomAdapter;
 
     Boolean getDataSucces = false;
 
@@ -67,24 +72,35 @@ public class showMatches extends Fragment {
 
         myView = inflater.inflate(R.layout.show_matches_layout, container, false);
 
-       // showMatches = (TextView) myView.findViewById(R.id.showAllMatchesTV);
         matchesListView = (ListView) myView.findViewById(R.id.macthesListView);
 
         matches = new ArrayList<>();
         teams = new HashMap<>();
         teamLogo = new HashMap<>();
 
-        matchesCustomAdapter = new ShowMatchesCustomAdapter(myView.getContext(),matches);
+        //matchesCustomAdapter = new ShowMatchesCustomAdapter(myView.getContext(),matches);
+        matcheListsCustomAdapter = new ShowMatchesCustomListAdapter(myView.getContext(),matches);
 
-        matchesListView.setAdapter(matchesCustomAdapter);
+        matchesListView.setAdapter(matcheListsCustomAdapter);
 
-        match = new Matches("","Match / Date","","","","","", "Home","Draw","Away","");
+      /*  match = new Matches("","Match","","","","","", "Home","Draw","Away","");
         matches.add(match);
+
         match = new Matches("","","","","","","","","","","");
         matches.add(match);
-        matchesCustomAdapter.notifyDataSetChanged();
+        matcheListsCustomAdapter.notifyDataSetChanged();*/
 
         getTeam();
+
+        matchesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+
+            }
+        });
 
         return myView;
     }
@@ -198,19 +214,18 @@ public class showMatches extends Fragment {
                             String teamAName = teams.get(id_home);
                             String teamBName = teams.get(id_away);
 
+                            String logoA = teamLogo.get(id_home);
+                            String logoB = teamLogo.get(id_away);
+
                             String matchName = teamAName + " - " + teamBName;
 
-                            match = new Matches("" + id, matchName + "\n " + data,teamAName,"",teamBName,"", "", "" + teamA, "" + draw, "" + teamB, "");
+                            match = new Matches("" + id, matchName ,teamAName,logoA,teamBName,logoB, "", "" + ""+teamA, "" + ""+draw, "" + ""+teamB, "");
 
                             matches.add(match);
-                            matchesCustomAdapter.notifyDataSetChanged();
+                            matcheListsCustomAdapter.notifyDataSetChanged();
 
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
-
-
-
-
 
                     } else {
 

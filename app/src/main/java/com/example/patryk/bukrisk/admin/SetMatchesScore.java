@@ -2,16 +2,18 @@ package com.example.patryk.bukrisk.admin;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,23 +23,16 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
 import com.example.patryk.bukrisk.Request.GetFinishedMatchesRequest;
-import com.example.patryk.bukrisk.Request.GetMatchesRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.Request.UpdateMatchesScoreRequest;
-import com.example.patryk.bukrisk.Request.updatePaymentsRequest;
-import com.example.patryk.bukrisk.adapter.Bets;
 import com.example.patryk.bukrisk.adapter.Matches;
 import com.example.patryk.bukrisk.adapter.NewCouponMatchesCustomAdapter;
-import com.example.patryk.bukrisk.adapter.Payments;
-import com.example.patryk.bukrisk.adapter.ShowBetsInCouponCustomAdapter;
-import com.example.patryk.bukrisk.user.userMain;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -55,9 +50,9 @@ public class SetMatchesScore extends Fragment {
     HashMap<Integer, String> teamLogoHash;
     HashMap<String, Integer> matchHash;
 
-    TextView tv1;
-
     Matches match;
+
+    Bitmap decodedByte;
 
     int position1;
 
@@ -68,8 +63,7 @@ public class SetMatchesScore extends Fragment {
 
         myView = inflater.inflate(R.layout.set_matches_score_layout, container, false);
 
-       // tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
-        matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
+        matchesLV = (ListView) myView.findViewById(R.id.set_score_lv);
 
         matches = new ArrayList<>();
         matchesCustomAdapter = new NewCouponMatchesCustomAdapter(myView.getContext(), matches);
@@ -96,8 +90,11 @@ public class SetMatchesScore extends Fragment {
                 String drawM = m.getX().toString();
                 String awayM = m.getB().toString();
 
+                String logoA = m.getLogoA().toString();
+                String logoB = m.getLogoB().toString();
+
                 //Toast.makeText(myView.getContext(),nameM + dateM + homeM + drawM + awayM ,Toast.LENGTH_SHORT).show();
-                setMatchesScore(id, nameM, dateM);
+                setMatchesScore(id, nameM, dateM,logoA,logoB);
             }
         });
 
@@ -264,7 +261,14 @@ public class SetMatchesScore extends Fragment {
 
     }
 
-    private void setMatchesScore(final String id, String name, String date)
+    private void decodeByte64(String code){
+
+        byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+        decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+    }
+
+    private void setMatchesScore(final String id, String name, String date, String logoA, String logoB)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
         builder.setTitle(R.string.setMatchesScore);
@@ -278,6 +282,9 @@ public class SetMatchesScore extends Fragment {
         final EditText teamAScoreValue = (EditText) viewInflated.findViewById(R.id.resultAAlertDialogET);
         final EditText teamBScoreValue = (EditText) viewInflated.findViewById(R.id.resultBAlertDialogET);
 
+        final ImageView logoAlogo = (ImageView) viewInflated.findViewById(R.id.teamALogosetScoreIV);
+        final ImageView logoBlogo = (ImageView) viewInflated.findViewById(R.id.teamBLogoSetScoreIV);
+
         matchName.setText(name);
         matchDate.setText(date);
 
@@ -286,6 +293,12 @@ public class SetMatchesScore extends Fragment {
 
         teamA.setText(teamA_S);
         teamB.setText(teamB_S);
+
+        decodeByte64(logoA);
+        logoAlogo.setImageBitmap(decodedByte);
+
+        decodeByte64(logoB);
+        logoBlogo.setImageBitmap(decodedByte);
 
 
 

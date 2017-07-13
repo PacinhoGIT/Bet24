@@ -2,7 +2,6 @@ package com.example.patryk.bukrisk.user;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,11 +19,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
-import com.example.patryk.bukrisk.Request.GetFinishedMatchesRequest;
 import com.example.patryk.bukrisk.Request.GetScoresRequest;
 import com.example.patryk.bukrisk.Request.GetTeamRequest;
 import com.example.patryk.bukrisk.adapter.Matches;
-import com.example.patryk.bukrisk.adapter.NewCouponMatchesCustomAdapter;
 import com.example.patryk.bukrisk.adapter.ScoreCustomAdapter;
 
 import org.json.JSONArray;
@@ -60,13 +57,17 @@ public class ShowScore extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        myView = inflater.inflate(R.layout.set_matches_score_layout, container, false);
+        myView = inflater.inflate(R.layout.show_matches_score_layout, container, false);
 
        // tv1 = (TextView) myView.findViewById(R.id.setScoreTV);
        // tv1.setText("Scores");
 
         matchesLV = (ListView) myView.findViewById(R.id.matchesLV);
         Spinner dayCount = (Spinner) myView.findViewById(R.id.dayCountSpinner);
+        TextView tv = (TextView) myView.findViewById(R.id.textView6);
+
+        tv.setVisibility(View.VISIBLE);
+        dayCount.setVisibility(View.VISIBLE);
 
         List<String> days = new ArrayList<String>();
         days.add("--Days--");

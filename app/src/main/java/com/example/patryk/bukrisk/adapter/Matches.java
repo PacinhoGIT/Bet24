@@ -40,7 +40,16 @@ public class Matches {
         return date;
     }
 
+    public String getLogoA() {
+        return logoA;
+    }
+
+    public String getLogoB() {
+        return logoB;
+    }
+
     public String getId() {
+
         return id;
     }
 
