@@ -61,6 +61,7 @@ public class userMain extends Fragment
 
 
 
+
         public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
             myView = inflater.inflate(R.layout.user_home_layout, container, false);
@@ -74,7 +75,6 @@ public class userMain extends Fragment
             tv1.setText("Zalogowany jako : " + name + " " + mail);
 
             coupons = new ArrayList<>();
-            betsAL = new ArrayList<>();
             goodCoupon = new ArrayList<>();
             failedCoupon = new ArrayList<>();
 
@@ -215,19 +215,18 @@ public class userMain extends Fragment
 
     private void getBetsInCoupon(final String id_coupon, final boolean end){
 
-        betsAL.clear();
-
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 try {
 
                     JSONObject jsonResponse = new JSONObject(response);
-
                     boolean success = jsonResponse.getBoolean("success");
 
                     if (success) {
+
+                        betsAL = new ArrayList<>();
+                        betsAL.clear();
 
                         JSONArray jsonArray = jsonResponse.getJSONArray("bets");
 
@@ -246,7 +245,10 @@ public class userMain extends Fragment
 
                         }
 
+                        System.out.print(betsAL.size());
+
                         int goodBet=0;
+                        int noScore=0;
 
                         for(int i=0;i<betsAL.size();i++){
 
@@ -274,6 +276,9 @@ public class userMain extends Fragment
                             goodCoupon.add(id_coupon);
                         }
 
+
+
+
                         if(end==true)
                         {
                             if(goodCoupon.size()>0 || failedCoupon.size()>0) {
@@ -286,6 +291,7 @@ public class userMain extends Fragment
                         }
 
                     } else {
+
 
                     }
 

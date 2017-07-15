@@ -226,6 +226,38 @@ public class newCoupon extends Fragment {
             public void onClick(View v) {
 
                 if(bets.size()>1) {
+
+                    Double totalRiskValue = 0.0;
+                    Double totalCourseValue = 0.0;
+                    Double toWinValue = 0.0;
+
+
+                        for (int i = 1; i < bets.size(); i++) {
+                            Double cValue = Double.valueOf(bets.get(i).getCourse().replace(",", "."));
+
+                            if(totalCourseValue==0.0) {
+                                totalCourseValue=cValue;
+                            }
+                            else {
+                                totalCourseValue = totalCourseValue*cValue;
+                            }
+
+                            Double rValue = Double.valueOf(bets.get(i).getRisk().replace(",", "."));
+                            totalRiskValue += rValue;
+                        }
+
+                        toWinValue = (totalCourseValue * money) * 0.8;
+
+
+
+                    java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
+
+                    updateCouponArgs = new String[4];
+                    updateCouponArgs[0] = "" + df.format(totalCourseValue).replace(",", ".");
+                    updateCouponArgs[1] = "" + df.format(totalRiskValue / (bets.size() - 1)).replace(",", ".");
+                    updateCouponArgs[2] = "" + df.format(toWinValue).replace(",", ".");
+                    updateCouponArgs[3] = "" + id_coupon;
+
                     addBets();
                 }
             }
@@ -360,7 +392,7 @@ public class newCoupon extends Fragment {
                                             totalRiskValue += rValue;
                                         }
 
-                                        toWinValue = (totalCourseValue * money) * 0.8;
+                                        toWinValue = (totalCourseValue * money) * 0.9;
 
 
                                     }
