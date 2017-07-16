@@ -114,8 +114,16 @@ public class walletUser extends Fragment {
 
                     if (success) {
 
+
+
+                        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
+
                          valueS = jsonResponse.getDouble("wallet");
-                         funds.setText(""+valueS + " PLN");
+                         String moneyS= String.valueOf(valueS);
+                         moneyS = df.format(valueS);
+                         moneyS = moneyS.replace(".",",");
+
+                         funds.setText(""+moneyS + " PLN");
 
                         progressDialog.dismiss();
 

@@ -385,8 +385,18 @@ public class userMain extends Fragment
         countWinTV.setText(""+goodCoupon.size());
         countLoseTV.setText(""+failedCoupon.size());
 
-        moneyWinTV.setText(""+moneyWin + " PLN");
-        moneyLoseTV.setText(" - "+moneyLose + " PLN");
+        java.text.DecimalFormat df = new java.text.DecimalFormat("0.00");
+
+        String moneyWinS= String.valueOf(moneyWin);
+        String moneyLoseS= String.valueOf(moneyLose);
+
+        moneyWinS = df.format(moneyWin);
+        moneyLoseS = df.format(moneyLose);
+        moneyLoseS = moneyLoseS.replace(".",",");
+        moneyWinS = moneyWinS.replace(".",",");
+
+        moneyWinTV.setText(""+moneyWinS + " PLN");
+        moneyLoseTV.setText(" - "+moneyLoseS + " PLN");
 
         builder.setView(viewInflated)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
