@@ -16,10 +16,13 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -33,6 +36,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,6 +52,9 @@ public class addTeam extends Fragment {
     EditText teamNameED;
     Button addTeamBTN,logoBtn;
     SeekBar teamRatingValue, formRatingValue;
+    Spinner liga;
+
+    String ligaName;
 
     double teamRatingVal;
     double formRatingVal;
@@ -79,6 +87,52 @@ public class addTeam extends Fragment {
 
         addTeamBTN = (Button) myView.findViewById(R.id.addTeamBTN);
         logoBtn = (Button) myView.findViewById(R.id.logoBtn);
+
+        liga = (Spinner) myView.findViewById(R.id.ligaSpinnerAddTeam);
+
+        final ArrayList<String> ligas = new ArrayList<String>();
+        ligas.add("LFP");
+        ligas.add("Bundesliga");
+        ligas.add("Serie A");
+        ligas.add("Ligue 1");
+        ligas.add("BPL");
+        ligas.add("Ekstraklasa");
+        ligas.add("Other");
+
+        final HashMap<String, String> ligaHash = new HashMap<>();
+        ligaHash.put("LFP","LFP");
+        ligaHash.put("Bundesliga","BL");
+        ligaHash.put("Serie A","SA");
+        ligaHash.put("Ligue 1","L1");
+        ligaHash.put("BPL","BPL");
+        ligaHash.put("Ekstraklasa","LE");
+        ligaHash.put("Other","Other");
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(myView.getContext(),
+                android.R.layout.simple_spinner_item, ligas);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        liga.setAdapter(dataAdapter);
+        dataAdapter.notifyDataSetChanged();
+
+        liga.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+                ligaName =ligaHash.get(ligas.get(position));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ligaName="LFP";
+            }
+
+        });
 
         teamRatingValue = (SeekBar) myView.findViewById(R.id.teamRatingSB);
         teamRatingValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -314,7 +368,7 @@ public class addTeam extends Fragment {
             }
         };
 
-        AddTeamRequest addteam1 = new AddTeamRequest(teamName1,""+teamRatingVal,""+formRatingVal,""+overallRatingVall,logo, responseListener);
+        AddTeamRequest addteam1 = new AddTeamRequest(teamName1,""+teamRatingVal,""+formRatingVal,""+overallRatingVall,logo,ligaName, responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(addteam1);
     }

@@ -21,4 +21,28 @@ public class Teams {
         this.overall_rating = overall_rating;
         this.logo=logo;
     }
+
+    public int getId_team() {
+        return id_team;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getTeam_rating() {
+        return team_rating;
+    }
+
+    public int getForm_rating() {
+        return form_rating;
+    }
+
+    public double getOverall_rating() {
+        return overall_rating;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
 }

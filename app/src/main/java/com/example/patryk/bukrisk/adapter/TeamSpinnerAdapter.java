@@ -33,7 +33,6 @@ public class TeamSpinnerAdapter  extends ArrayAdapter<Teams> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-
         teams = getItem(position);
 
 

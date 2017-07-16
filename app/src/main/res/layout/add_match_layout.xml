@@ -52,6 +52,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="29dp"
         android:layout_toEndOf="@+id/teamATV"
+        android:visibility="invisible"
         android:background="@android:drawable/spinner_background"
         android:popupBackground="@android:drawable/spinner_background" />
 
@@ -159,6 +160,7 @@
         android:background="@android:drawable/spinner_background"
         android:popupBackground="@android:drawable/spinner_background"
         android:layout_below="@+id/addMatchTV"
+        android:visibility="invisible"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="38dp"
         android:layout_alignStart="@+id/teamBSpin" />
@@ -186,5 +188,43 @@
         android:layout_below="@+id/dateImgBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/team"
+        android:layout_alignTop="@+id/teamASpin"
+        android:id="@+id/teamALogoAddMatchImageButton"
+        android:layout_alignStart="@+id/teamASpin"
+        android:layout_above="@+id/teamBSpin"
+        android:layout_alignEnd="@+id/addMatchBTN" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/team"
+        android:layout_alignTop="@+id/teamBSpin"
+        android:layout_alignStart="@+id/teamBSpin"
+        android:id="@+id/teamBLogoAddMatchImageButton"
+        android:layout_alignBottom="@+id/teamBSpin"
+        android:layout_alignEnd="@+id/teamALogoAddMatchImageButton" />
+
+    <Button
+        android:text="@string/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/teamBSpin"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/selectTeamAButton"
+        android:layout_alignTop="@+id/teamASpin" />
+
+    <Button
+        android:text="@string/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/teamBSpin"
+        android:layout_alignStart="@+id/selectTeamAButton"
+        android:id="@+id/selectTeamBButton"
+        android:layout_alignTop="@+id/teamBSpin" />
 
 </RelativeLayout>

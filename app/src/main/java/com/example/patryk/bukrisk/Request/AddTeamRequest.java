@@ -14,7 +14,7 @@ public class AddTeamRequest extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/AddTeam.php";
     private Map<String, String> params;
 
-    public AddTeamRequest(String name, String team_rating, String form_rating, String overall_rating,String logo, Response.Listener<String> listener) {
+    public AddTeamRequest(String name, String team_rating, String form_rating, String overall_rating,String logo,String liga, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("name", name);
@@ -22,6 +22,7 @@ public class AddTeamRequest extends StringRequest {
         params.put("form_rating", form_rating);
         params.put("overall_rating", overall_rating );
         params.put("logo", logo );
+        params.put("liga", liga );
 
     }
 
