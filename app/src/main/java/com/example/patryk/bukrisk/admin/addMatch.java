@@ -260,11 +260,48 @@ public class addMatch extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(teamA.equals(teamB))
-                {
+                if(teamA!=null && teamB!=null){
+
+                    if(teamA.equals(teamB))
+                    {
+                        new AlertDialog.Builder(myView.getContext())
+                                .setTitle(R.string.addMatch)
+                                .setMessage(R.string.theSameTeamsError)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.dismiss();
+                                    }
+
+                                })
+                                .show();
+                    }
+                    else
+                    {
+
+                        double curse[] = setCurse(overallRating.get(teamA),overallRating.get(teamB));
+
+                        java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+
+                        A = curse[0];
+                        D = curse[2];
+                        B = curse[1];
+
+                        curseATV.setText("" + df.format(curse[0]));
+                        curseDrawTV.setText("" + df.format(curse[2]));
+                        curseBTV.setText("" + df.format(curse[1]));
+
+                        addBTN.setEnabled(true);
+                        //calculateCurse.setEnabled(false);
+                    }
+
+                }else{
+
                     new AlertDialog.Builder(myView.getContext())
                             .setTitle(R.string.addMatch)
-                            .setMessage(R.string.theSameTeamsError)
+                            .setMessage("Select two diffrent teams !")
                             .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
                             {
                                 @Override
@@ -275,25 +312,9 @@ public class addMatch extends Fragment {
 
                             })
                             .show();
+
                 }
-                else
-                {
-                    System.out.print(overallRating);
-                    double curse[] = setCurse(overallRating.get(teamA),overallRating.get(teamB));
 
-                    java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
-
-                    A = curse[0];
-                    D = curse[2];
-                    B = curse[1];
-
-                    curseATV.setText("" + df.format(curse[0]));
-                    curseDrawTV.setText("" + df.format(curse[2]));
-                    curseBTV.setText("" + df.format(curse[1]));
-
-                    addBTN.setEnabled(true);
-                    //calculateCurse.setEnabled(false);
-                }
 
             }
         });
@@ -321,7 +342,9 @@ public class addMatch extends Fragment {
                 }
                 else
                 {
+
                     addMatches();
+
                 }
             }
         });
@@ -419,8 +442,6 @@ public class addMatch extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
-
                 pos=position;
 
                     if(teamAorB.equals("A")){
@@ -437,7 +458,12 @@ public class addMatch extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 if(TeamFilterList.size()>0) {
-                    teamA = TeamFilterList.get(pos).getName();
+                    if(teamAorB.equals("A")){
+                    teamAA = TeamFilterList.get(pos).getName();
+                    }
+                    else if(teamAorB.equals("B")){
+                        teamBB = TeamFilterList.get(pos).getName();
+                    }
                 }
             }
 
@@ -447,6 +473,16 @@ public class addMatch extends Fragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        if(teamAorB.equals("A")){
+
+                            Teams t = TeamFilterList.get(pos);
+                            teamAA=t.getName();
+                        }else if(teamAorB.equals("B")){
+
+                            Teams t = TeamFilterList.get(pos);
+                            teamBB=t.getName();
+                        }
 
                         if(TeamFilterList.size()>0) {
                             Teams t = TeamFilterList.get(pos);
