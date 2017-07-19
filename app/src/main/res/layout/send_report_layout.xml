@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:hint="Report title "
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="22dp"
+        android:id="@+id/titleReportED"
+        android:layout_alignParentEnd="true"
+        android:singleLine="false" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
+        android:textAlignment="center"
+        android:singleLine="false"
+        android:lines="20"
+        android:minLines="5"
+        android:gravity="center"
+        android:hint="Report message "
+        android:layout_below="@+id/titleReportED"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:id="@+id/textReportED"
+        android:layout_marginBottom="20px"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/sendReportButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp"
+        android:id="@+id/sendReportButton"
+        android:text="@string/send" />
+
+</RelativeLayout>

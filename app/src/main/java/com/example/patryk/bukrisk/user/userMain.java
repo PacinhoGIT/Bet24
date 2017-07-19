@@ -55,14 +55,12 @@ public class userMain extends Fragment
     private ArrayList<Coupons> coupons ;
 
     private int id;
+    private int counter =0;
+
 
     private ArrayList<String> failedCoupon;
 
-
-
-
-
-        public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
             myView = inflater.inflate(R.layout.user_home_layout, container, false);
 
@@ -213,7 +211,7 @@ public class userMain extends Fragment
 
     }
 
-    private void getBetsInCoupon(final String id_coupon, final boolean end){
+    private void getBetsInCoupon(final String id_coupon /*, final boolean end */ ){
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -227,6 +225,8 @@ public class userMain extends Fragment
 
                         betsAL = new ArrayList<>();
                         betsAL.clear();
+
+                        counter++;
 
                         JSONArray jsonArray = jsonResponse.getJSONArray("bets");
 
@@ -277,9 +277,8 @@ public class userMain extends Fragment
                         }
 
 
-
-
-                        if(end==true)
+                        //if(end==true)
+                        if(counter==coupons.size())
                         {
                             if(goodCoupon.size()>0 || failedCoupon.size()>0) {
                                 showSummaryAlertDialog();
@@ -292,7 +291,8 @@ public class userMain extends Fragment
 
                     } else {
 
-
+                        Toast.makeText(myView.getContext(),"Check Bets error !", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
 
                 } catch (JSONException e) {
@@ -314,26 +314,27 @@ public class userMain extends Fragment
 
         for(int i=0;i<coupons.size();i++)
         {
-            boolean end;
+          //  boolean end;
 
            Coupons c = coupons.get(i);
 
             String id_coupon = c.getId_coupons();
 
-            if(i==coupons.size()-1)
+          /*  if(i==coupons.size()-1)
             {
                 end=true;
             }
             else{
                 end=false;
-            }
-            getBetsInCoupon(id_coupon,end);
+            }*/
+
+            //getBetsInCoupon(id_coupon,end);
+            getBetsInCoupon(id_coupon);
 
         }
     }
 
-    private void showSummaryAlertDialog()
-    {
+    private void showSummaryAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(myView.getContext());
         builder.setTitle(R.string.checkCoupon);
         final View viewInflated = LayoutInflater.from(myView.getContext()).inflate(R.layout.summary_check_coupon_alert_dialog, (ViewGroup) getView(), false);
@@ -471,7 +472,6 @@ public class userMain extends Fragment
 
     }
 
-
     private void saveWallet(String value, int idUser) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -539,7 +539,7 @@ public class userMain extends Fragment
 
             String id_coupon = goodCoupon.get(i);
 
-            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y", responseListener);
+            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y/W", responseListener);
             RequestQueue queue = Volley.newRequestQueue(myView.getContext());
             queue.add(UMR);
         }
@@ -583,7 +583,7 @@ public class userMain extends Fragment
 
             String id_coupon = failedCoupon.get(i);
 
-            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y", responseListener);
+            UpdateSettledCouponsRequest UMR = new UpdateSettledCouponsRequest(id_coupon,"Y/L", responseListener);
             RequestQueue queue = Volley.newRequestQueue(myView.getContext());
             queue.add(UMR);
         }

@@ -23,10 +23,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
+import com.example.patryk.bukrisk.Request.GetUserRequest;
 import com.example.patryk.bukrisk.Request.RegisterRequest;
+import com.example.patryk.bukrisk.adapter.Coupons;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
     String userName,userEmail,userPassword,userConfirmPassword;
 
     private ProgressDialog pDialog;
+    ProgressDialog progressDialog;
+    private int counter=0;
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
 
@@ -167,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+                progressDialog = new ProgressDialog(RegisterActivity.this);
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Register...");
                 progressDialog.show();
@@ -217,48 +224,18 @@ public class RegisterActivity extends AppCompatActivity {
                 if (goodDate == 4) {
 
                     if (isNetworkAvailable() == true) {
-                        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject jsonResponse = new JSONObject(response);
-                                    boolean success = jsonResponse.getBoolean("success");
-                                    if (success) {
+
+                        checkAvaliableNameAndEmail();
 
 
-
-                                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                                        intent.putExtra("name", userName);
-
-                                                        RegisterActivity.this.startActivity(intent);
-                                                        progressDialog.dismiss();
-                                                          finishAffinity();
-
-
-                                    } else {
-                                        Toast.makeText(getBaseContext(), R.string.registerFailedText, Toast.LENGTH_LONG).show();
-
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
-
-                        RegisterRequest registerRequest = new RegisterRequest(userName, userPassword, userEmail, "N", "100", responseListener);
-                        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                        queue.add(registerRequest);
                     } else {
-
-
 
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
 
                                         progressDialog.dismiss();
-                                        Toast.makeText(getBaseContext(), R.string.noInterentRegister, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getBaseContext(), R.string.noInterentRegister, Toast.LENGTH_SHORT).show();
 
                                     }
                                 }, 1500);
@@ -276,6 +253,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     Toast.makeText(getBaseContext(), R.string.registerFailedText, Toast.LENGTH_LONG).show();
 
+
                                 }
                             }, 500);
                 }
@@ -284,6 +262,93 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         }
+
+    private void checkAvaliableNameAndEmail(){
+
+        counter=0;
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+
+                         JSONArray jsonArray = jsonResponse.getJSONArray("users");
+
+                        ArrayList<JSONObject> jsonValues = new ArrayList<>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                          counter++;
+                        }
+
+                        finishRegister();
+
+                    } else {
+
+                        finishRegister();
+                        //Toast.makeText(getBaseContext(), R.string.registerFailedText, Toast.LENGTH_LONG).show();
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                }
+            }
+        };
+
+        GetUserRequest registerRequest = new GetUserRequest(userName, userEmail, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+        queue.add(registerRequest);
+
+    }
+
+    private void finishRegister(){
+
+        if(counter==0) {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        if (success) {
+
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            intent.putExtra("name", userName);
+
+                            RegisterActivity.this.startActivity(intent);
+                            progressDialog.dismiss();
+                            finishAffinity();
+
+
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(getBaseContext(), R.string.registerFailedText, Toast.LENGTH_LONG).show();
+
+
+                        }
+                    } catch (JSONException e) {
+                        progressDialog.dismiss();
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            RegisterRequest registerRequest = new RegisterRequest(userName, userPassword, userEmail, "N", "100", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+            queue.add(registerRequest);
+        }else{
+            progressDialog.dismiss();
+            Toast.makeText(getBaseContext(), R.string.noAvaliableUserNameOrEmail, Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -325,7 +390,5 @@ public class RegisterActivity extends AppCompatActivity {
          }
 
     }
-
-
 
 }

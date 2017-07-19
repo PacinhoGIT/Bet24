@@ -195,6 +195,23 @@ public class homeUser extends AppCompatActivity
 
 
             confirmLogout();
+        }else if (id == R.id.report) {
+
+            Bundle args = new Bundle();
+            args.putInt("id_user", id_user);
+
+
+            SendReport SR = new SendReport();
+            SR.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            SR,
+                            SR.getTag()
+                    ).commit();
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

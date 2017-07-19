@@ -196,7 +196,8 @@ public class newCoupon extends Fragment {
                     try {
                         money = Double.parseDouble(moneyValue.getText().toString());
                         if (valueS > money) {
-                            addCoupon();
+                            checkCouponName();
+                            // addCoupon();
                         } else {
                             Toast.makeText(myView.getContext(), "You don't have enough money !", Toast.LENGTH_SHORT).show();
                         }
@@ -265,6 +266,17 @@ public class newCoupon extends Fragment {
 
         save.setEnabled(false);
         return myView;
+    }
+
+    private void checkCouponName(){
+
+        progressDialog = new ProgressDialog(myView.getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Adding ...");
+        progressDialog.show();
+
+        final String name = nameOfCouponET.getText().toString();
+        getCouponID(name,true);
     }
 
     private void updateCourse(String[] args) {
@@ -781,11 +793,6 @@ public class newCoupon extends Fragment {
 
         final String name = nameOfCouponET.getText().toString();
 
-        progressDialog = new ProgressDialog(myView.getContext());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Adding ...");
-        progressDialog.show();
-
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -795,9 +802,12 @@ public class newCoupon extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
 
-                        getCouponID(name);
+                        getCouponID(name,false);
 
                     } else {
+
+                        Toast.makeText(myView.getContext(), "Coupon add failed !", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
 
                 } catch (JSONException e) {
@@ -813,40 +823,47 @@ public class newCoupon extends Fragment {
         queue.add(addCoupon);
     }
 
-    private void getCouponID(String name) {
+    private void getCouponID(String name, final boolean check) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
 
-
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
 
                     if (success) {
 
-                        id_coupon = jsonResponse.getInt("id_coupon");
-                        addBtn.setEnabled(false);
-                        nameOfCouponET.setEnabled(false);
-                        moneyValue.setEnabled(false);
+                        if(check==false) {
+                            id_coupon = jsonResponse.getInt("id_coupon");
+                            addBtn.setEnabled(false);
+                            nameOfCouponET.setEnabled(false);
+                            moneyValue.setEnabled(false);
 
-                        progressDialog.dismiss();
-                        new AlertDialog.Builder(myView.getContext())
-                                .setTitle(R.string.newCoupon)
-                                .setMessage(R.string.success)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                            progressDialog.dismiss();
+                            new AlertDialog.Builder(myView.getContext())
+                                    .setTitle(R.string.newCoupon)
+                                    .setMessage(R.string.success)
+                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                        dialog.dismiss();
-                                    }
+                                            dialog.dismiss();
+                                        }
 
-                                })
-                                .show();
+                                    })
+                                    .show();
+                        }else{
+
+                            progressDialog.dismiss();
+                            Toast.makeText(myView.getContext(),"This name is allready in use !",Toast.LENGTH_SHORT).show();
+                        }
 
 
                     } else {
+
+                        addCoupon();
 
                     }
 
