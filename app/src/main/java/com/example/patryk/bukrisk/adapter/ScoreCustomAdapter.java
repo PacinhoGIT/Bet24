@@ -37,16 +37,16 @@ public class ScoreCustomAdapter extends ArrayAdapter<Matches> {
         TextView teamB = (TextView) convertView.findViewById(R.id.teamBLogoNameTV);
         TextView score = (TextView) convertView.findViewById(R.id.scoreTV);
 
-        teamA.setVisibility(View.INVISIBLE);
-        teamB.setVisibility(View.INVISIBLE);
+       // teamA.setVisibility(View.INVISIBLE);
+       // teamB.setVisibility(View.INVISIBLE);
 
         ImageView teamALogo = (ImageView) convertView.findViewById(R.id.teamALogoIV);
         ImageView teamBLogo = (ImageView) convertView.findViewById(R.id.teamBLogoIV);
 
         //TextView date = (TextView) convertView.findViewById(R.id.dateMatchTV);
 
-        //teamA.setText(match.teamA);
-        //teamB.setText(match.teamB);
+        teamA.setText(match.teamA);
+        teamB.setText(match.teamB);
 
         decodeByte64(match.logoA);
         teamALogo.setImageBitmap(decodedByte);

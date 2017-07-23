@@ -14,8 +14,11 @@
 
     <TextView
         android:text="TextView"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="52dp"
+        android:singleLine="false"
+        android:lines="2"
+        android:maxLines="2"
         android:textAlignment="center"
         android:gravity="center"
         android:id="@+id/teamALogoNameTV"
@@ -32,7 +35,10 @@
     <TextView
         android:text="TextView"
         android:gravity="center"
-        android:layout_width="wrap_content"
+        android:singleLine="false"
+        android:lines="2"
+        android:maxLines="2"
+        android:layout_width="60dp"
         android:layout_height="52dp"
         android:id="@+id/teamBLogoNameTV"
         android:layout_weight="0.51" />
