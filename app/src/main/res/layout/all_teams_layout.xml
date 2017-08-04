@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:background="@android:drawable/spinner_background"
+        android:popupBackground="@android:drawable/spinner_background"
+        android:id="@+id/LigaSpinn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        android:id="@+id/allTeamLV"
+        android:layout_below="@+id/LigaSpinn"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

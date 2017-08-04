@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailDate"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:id="@+id/detailTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center" />
+
+    <TextView
+        android:text="TextView"
+        android:singleLine="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detailTitle"
+        android:layout_marginTop="53dp"
+        android:id="@+id/detailText"
+        android:layout_alignStart="@+id/detailUser"
+        android:layout_alignEnd="@+id/detailDate" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:textStyle="italic"
+        android:id="@+id/detailDate"
+        android:layout_alignBaseline="@+id/detailUser"
+        android:layout_alignBottom="@+id/detailUser"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:textStyle="italic"
+        android:id="@+id/detailUser"
+        android:layout_marginStart="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

@@ -572,8 +572,9 @@ public class addMatch extends Fragment {
                             int form_rating = jsonValues.get(i).getInt("form_rating");
                             double overall_rating = jsonValues.get(i).getDouble("overall_rating");
                             String logo = jsonValues.get(i).getString("logo");
+                            String liga = jsonValues.get(i).getString("liga");
 
-                            Teams team = new Teams(id_team,name,team_rating,form_rating,overall_rating,logo);
+                            Teams team = new Teams(id_team,name,team_rating,form_rating,overall_rating,logo,liga);
                             TeamFilterList.add(team);
                             selectTeam.notifyDataSetChanged();
 
@@ -643,8 +644,9 @@ public class addMatch extends Fragment {
                             int form_rating = jsonValues.get(i).getInt("form_rating");
                             double overall_rating = jsonValues.get(i).getDouble("overall_rating");
                             String logo = jsonValues.get(i).getString("logo");
+                            String liga = jsonValues.get(i).getString("liga");
 
-                            team = new Teams(id_team,name,team_rating,form_rating,overall_rating,logo);
+                            team = new Teams(id_team,name,team_rating,form_rating,overall_rating,logo,liga);
                             TeamsList.add(team);
 
                             teamsLits.add(name);

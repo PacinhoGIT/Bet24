@@ -14,13 +14,14 @@ public class AddReportRequest  extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/AddReport.php";
     private Map<String, String> params;
 
-    public AddReportRequest(String id_user, String title, String text, String date, Response.Listener<String> listener) {
+    public AddReportRequest(String id_user, String title, String text, String date,String checked, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("id_user", id_user);
         params.put("title", title);
         params.put("text", text);
         params.put("date", date);
+        params.put("checked",checked);
 
 
     }

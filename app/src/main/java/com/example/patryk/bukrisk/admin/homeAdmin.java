@@ -119,7 +119,29 @@ public class homeAdmin extends AppCompatActivity
                             aT.getTag()
                     ).commit();
 
-        } else if (id == R.id.acceptPayments) {
+        } else if (id == R.id.teams) {
+
+            AllTeams aT = new AllTeams();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_admin,
+                            aT,
+                            aT.getTag()
+                    ).commit();
+
+        }else if (id == R.id.reports) {
+
+            UsersReports aP = new UsersReports();
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_admin,
+                            aP,
+                            aP.getTag()
+                    ).commit();
+
+        }else if (id == R.id.acceptPayments) {
 
             acceptPayments aP = new acceptPayments();
 

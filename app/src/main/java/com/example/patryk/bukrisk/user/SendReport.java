@@ -90,7 +90,12 @@ public class SendReport extends Fragment {
                 String messageS = messageED.getText().toString();
 
                 if(titleS.length()!=0 && messageS.length()!=0){
-                    sendReport(""+id_user,titleS,messageS,date);
+                   if(messageS.length()<500 && titleS.length()<20) {
+                       sendReport("" + id_user, titleS, messageS, date);
+                   }
+                    else{
+                       Toast.makeText(myView.getContext(), "Title must be max 20 characters and Message must be max 500 characters !", Toast.LENGTH_SHORT).show();
+                   }
                 }
                 else{
                     Toast.makeText(myView.getContext(), "Title and Message can't be empty ! Correct and try agin. ", Toast.LENGTH_SHORT).show();
@@ -137,7 +142,7 @@ public class SendReport extends Fragment {
 
 
 
-        AddReportRequest addReport = new AddReportRequest(id,title,message,date, responseListener);
+        AddReportRequest addReport = new AddReportRequest(id,title,message,date,"F", responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(addReport);
     }

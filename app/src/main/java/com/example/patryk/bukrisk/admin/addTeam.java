@@ -78,8 +78,6 @@ public class addTeam extends Fragment {
         teamName = (TextView) myView.findViewById(R.id.teamNameTV);
         teamRating = (TextView) myView.findViewById(R.id.teamRatingTV);
         formRating = (TextView) myView.findViewById(R.id.formRatingTV);
-        overallRating = (TextView) myView.findViewById(R.id.overallRatingTV);
-        overallValue = (TextView) myView.findViewById(R.id.overallRatingValue);
         teamRatingValueTV = (TextView) myView.findViewById(R.id.teamValueTV);
         formRatingValueTV = (TextView) myView.findViewById(R.id.formValueTV);
 
@@ -158,7 +156,7 @@ public class addTeam extends Fragment {
 
 
                 overallRatingVall = (teamRatingVal + formRatingVal)/2;
-                overallValue.setText(""+overallRatingVall);
+
             }
         });
 
@@ -186,7 +184,6 @@ public class addTeam extends Fragment {
 
                 overallRatingVall = (teamRatingVal + formRatingVal)/2;
 
-                overallValue.setText(""+overallRatingVall);
             }
         });
 
@@ -227,15 +224,10 @@ public class addTeam extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
-
-
             Bitmap bitmap = null;
 
                 try {
                      bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-
-
-
 
                 }catch (Exception e){
 
@@ -255,9 +247,6 @@ public class addTeam extends Fragment {
 
 
             logo = encodeImage(bitmap);
-
-
-
 
             try {
 

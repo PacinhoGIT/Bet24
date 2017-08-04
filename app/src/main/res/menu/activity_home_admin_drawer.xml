@@ -24,6 +24,11 @@
                 android:id="@+id/addTeam"
                 android:icon="@drawable/team"
                 android:title="Add Team" />
+
+            <item
+                android:id="@+id/teams"
+                android:icon="@drawable/shirt"
+                android:title="Teams" />
         </menu>
     </item>
 
@@ -39,6 +44,10 @@
     <item android:title="Aplications">
         <menu>
             <item
+                android:id="@+id/reports"
+                android:icon="@drawable/reports"
+                android:title="Reports" />
+            <item
                 android:id="@+id/logOutAdmin"
                 android:icon="@drawable/logout"
                 android:title="Logout" />
@@ -47,6 +56,8 @@
                 android:id="@+id/exitAdmin"
                 android:icon="@drawable/exit"
                 android:title="Exit" />
+
+
         </menu>
     </item>
 
