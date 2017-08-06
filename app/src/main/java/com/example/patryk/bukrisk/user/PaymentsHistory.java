@@ -1,4 +1,4 @@
-package com.example.patryk.bukrisk.admin;
+package com.example.patryk.bukrisk.user;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.patryk.bukrisk.R;
+import com.example.patryk.bukrisk.Request.GetPaymentsHistoryRequest;
 import com.example.patryk.bukrisk.Request.GetPaymentsRequest;
-import com.example.patryk.bukrisk.adapter.AcceptPaymentsCustomAdapter;
 import com.example.patryk.bukrisk.adapter.Payments;
+import com.example.patryk.bukrisk.adapter.PaymentsHistoryCustomAdapter;
+import com.example.patryk.bukrisk.adapter.Reply;
+import com.example.patryk.bukrisk.adapter.ReplyListCustomAdapter;
+import com.example.patryk.bukrisk.adapter.Reports;
+import com.example.patryk.bukrisk.adapter.UserReportsCustomAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,44 +30,42 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by patryk on 2017-04-28.
+ * Created by patryk on 2017-08-06.
  */
 
-public class acceptPayments extends Fragment {
+public class PaymentsHistory extends Fragment {
+
+    private ProgressDialog progressDialog;
+    ListView paymentsLV;
+    ArrayList<Payments> paymentses;
+    PaymentsHistoryCustomAdapter paymentsHistoryCustomAdapter;
+
+    private int id_user;
 
     View myView;
 
-    Payments payments;
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-    ArrayList<Payments> paymenstsList;
-    AcceptPaymentsCustomAdapter paymentsCustomAdapter;
+        myView = inflater.inflate(R.layout.users_reports_layout, container, false);
+        paymentsLV = (ListView) myView.findViewById(R.id.usersReportLV);
+        paymentses= new ArrayList<>();
 
-    ProgressDialog progressDialog;
+        paymentsHistoryCustomAdapter = new PaymentsHistoryCustomAdapter(myView.getContext(),paymentses);
+        paymentsLV.setAdapter(paymentsHistoryCustomAdapter);
+        Payments p = new Payments("","","","Money","Accept","Date");
+        paymentses.add(p);
+        paymentsHistoryCustomAdapter.notifyDataSetChanged();
 
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-
-        myView = inflater.inflate(R.layout.accept_payments_layout, container, false);
-
-       // TextView acceptPayText = (TextView) myView.findViewById(R.id.acceptPayText);
-        ListView paymentss = (ListView) myView.findViewById(R.id.payLV);
-
-        paymenstsList = new ArrayList<Payments>();
-        paymentsCustomAdapter = new AcceptPaymentsCustomAdapter(myView.getContext(),paymenstsList);
-
-        paymentss.setAdapter(paymentsCustomAdapter);
-
-        payments = new Payments("","","Name","Value","","");
-        paymenstsList.add(payments);
-
-        paymentsCustomAdapter.notifyDataSetChanged();
+        Bundle bundle = getArguments();
+        id_user = bundle.getInt("id_user");
 
         getPayments();
 
         return myView;
     }
 
-    public void getPayments()
-    {
+    private void getPayments(){
+
 
         progressDialog = new ProgressDialog(myView.getContext());
         progressDialog.setIndeterminate(true);
@@ -91,15 +94,13 @@ public class acceptPayments extends Fragment {
 
                             int id_pay = jsonValues.get(i).getInt("id_pay");
                             int id_user = jsonValues.get(i).getInt("id_user");
-                            String name = jsonValues.get(i).getString("name");
                             int value = jsonValues.get(i).getInt("value");
                             int accept = jsonValues.get(i).getInt("accept");
                             String date = jsonValues.get(i).getString("date");
 
-                            payments = new Payments(""+id_pay,""+id_user,name,""+value,""+accept,date);
-                            paymenstsList.add(payments);
-
-                            paymentsCustomAdapter.notifyDataSetChanged();
+                            Payments payments = new Payments(""+id_pay,""+id_user,"",""+value,""+accept,date);
+                            paymentses.add(payments);
+                            paymentsHistoryCustomAdapter.notifyDataSetChanged();
 
                             //showPay.setText(showPay.getText() + " Id_pay "+id_pay + " Id_user " + id_user + "Value " + value+" \n");
                         }
@@ -122,19 +123,8 @@ public class acceptPayments extends Fragment {
             }
         };
 
-        GetPaymentsRequest paymentsRequest = new GetPaymentsRequest("0", responseListener);
+        GetPaymentsHistoryRequest paymentsRequest = new GetPaymentsHistoryRequest(""+id_user, responseListener);
         RequestQueue queue = Volley.newRequestQueue(myView.getContext());
         queue.add(paymentsRequest);
-
     }
-
 }
-
-
-
-
-
-
-
-
-

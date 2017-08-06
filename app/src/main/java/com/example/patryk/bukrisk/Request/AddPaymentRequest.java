@@ -15,12 +15,13 @@ public class AddPaymentRequest extends StringRequest {
     private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/Payments.php";
     private Map<String, String> params;
 
-    public AddPaymentRequest(String id_user, String value, String accept, Response.Listener<String> listener) {
+    public AddPaymentRequest(String id_user, String value, String accept,String date, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("id_user", id_user);
         params.put("value", value);
         params.put("accept", accept);
+        params.put("date", date);
 
     }
 

@@ -8,18 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by patryk on 2017-04-30.
+ * Created by patryk on 2017-08-06.
  */
 
-public class updatePaymentsRequest extends StringRequest {
-    private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/updatePayments.php";
+public class UpdateReplyRequest extends StringRequest {
+    private static final String REGISTER_REQUEST_URL = "https://pacinho.000webhostapp.com/UpdateReply.php";
     private Map<String, String> params;
 
-    public updatePaymentsRequest(String accept, String id_pay, Response.Listener<String> listener) {
+    public UpdateReplyRequest(String Id_reply, Response.Listener<String> listener) {
         super(Request.Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
-        params.put("id_pay", id_pay );
-        params.put("accept", accept );
+        params.put("Id_reply", Id_reply );
 
 
     }

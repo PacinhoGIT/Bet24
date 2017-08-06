@@ -212,6 +212,40 @@ public class homeUser extends AppCompatActivity
                     ).commit();
 
 
+        }else if (id == R.id.showReport) {
+
+            Bundle args = new Bundle();
+            args.putInt("id_user", id_user);
+
+            MyReport SR = new MyReport();
+            SR.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            SR,
+                            SR.getTag()
+                    ).commit();
+
+
+        }
+
+        else if (id == R.id.paymentHistory) {
+
+            Bundle args = new Bundle();
+            args.putInt("id_user", id_user);
+
+            PaymentsHistory SR = new PaymentsHistory();
+            SR.setArguments(args);
+
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.content_home_user,
+                            SR,
+                            SR.getTag()
+                    ).commit();
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

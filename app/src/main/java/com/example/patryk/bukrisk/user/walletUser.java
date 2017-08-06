@@ -22,6 +22,8 @@ import com.example.patryk.bukrisk.Request.GetWalletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 /**
  * Created by patryk on 2017-04-27.
  */
@@ -33,6 +35,14 @@ public class walletUser extends Fragment {
     String nameU;
     double valueS;
     int id_user;
+
+    private int year;
+    private int month;
+    private int day;
+    String month1;
+    String day1;
+
+    String date;
 
     TextView funds;
     ProgressDialog progressDialog;
@@ -54,6 +64,28 @@ public class walletUser extends Fragment {
         Bundle bundle = getArguments();
         nameU = bundle.getString("nameUser");
         id_user = bundle.getInt("id_user");
+
+
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+        month += 1;
+
+        if (month < 10) {
+            month1 = "0" + month;
+        }
+
+        if (day < 10) {
+            day1 = "0" + day;
+        } else {
+            day1 = "" + day;
+        }
+
+
+        date = year + "-" + month1 + "-" + day1;
 
         myWallet.setVisibility(View.INVISIBLE);
         getWallet(nameU);
@@ -188,7 +220,7 @@ public class walletUser extends Fragment {
     String fundsValue = String.valueOf(value);
     String idUser = String.valueOf(id_user);
 
-    AddPaymentRequest addFunds = new AddPaymentRequest(idUser,fundsValue,"0", responseListener);
+    AddPaymentRequest addFunds = new AddPaymentRequest(idUser,fundsValue,"0",date, responseListener);
     RequestQueue queue = Volley.newRequestQueue(myView.getContext());
     queue.add(addFunds);
 }

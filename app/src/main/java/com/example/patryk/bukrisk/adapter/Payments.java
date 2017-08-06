@@ -7,18 +7,23 @@ package com.example.patryk.bukrisk.adapter;
 public class Payments {
 
     String id_pay, id_user, value, accept;
-    String name;
+    String name,date;
 
 
 
-    public Payments(String id_pay, String id_user,String name, String value, String accept) {
+    public Payments(String id_pay, String id_user,String name, String value, String accept,String date) {
 
         this.id_pay = id_pay;
         this.id_user = id_user;
         this.name = name;
         this.value = value;
         this.accept = accept;
+        this.date = date;
 
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getId_user() {return id_user;}

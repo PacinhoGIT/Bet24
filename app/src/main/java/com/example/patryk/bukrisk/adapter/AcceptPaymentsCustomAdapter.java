@@ -36,6 +36,7 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
     int id_u=0;
     int id_pay=0;
     int position1;
+    int acceptValue;
 
     String payS;
     String id_uS;
@@ -93,6 +94,7 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Please Wait !");
                     progressDialog.show();
+                    acceptValue=11;
 
                     getWallet(id_u);
                 }
@@ -123,6 +125,7 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
                     progressDialog.setMessage("Please Wait !");
                     progressDialog.show();
 
+                    acceptValue=10;
                     updatePayments(id_pay);
                 }
             }
@@ -246,7 +249,7 @@ public class AcceptPaymentsCustomAdapter extends ArrayAdapter<Payments> {
             }
         };
 
-        updatePaymentsRequest uW = new updatePaymentsRequest(""+id_pay, responseListener);
+        updatePaymentsRequest uW = new updatePaymentsRequest(""+acceptValue,""+id_pay, responseListener);
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(uW);
     }
